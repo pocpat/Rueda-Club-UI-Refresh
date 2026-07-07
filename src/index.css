@@ -68,7 +68,11 @@
   --accent-glow: rgba(78, 205, 196, 0.25);
   --ring: 0 0 0 3px rgba(78, 205, 196, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
   --noise-opacity: 0.06;
-}
+
+  /* ===== 1. Shared Theme Variables (Deep Indigo/Violet Palette) ===== */
+  --dark-card-accent: #4ecdc4; /* Cool teal matching the main page accents */
+  --dark-card-accent-glow: rgba(78, 205, 196, 0.15);
+  --dark-card-accent-bg: rgba(78, 205, 196, 0.05);}
 
 [data-theme="light"] {
   --bg: #e6d5c8;
@@ -94,6 +98,7 @@
   --noise-opacity: 0.02;
 }
 
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg);
@@ -103,9 +108,20 @@ body {
   min-height: 100vh;
   transition: background-color 400ms ease, color 400ms ease;
   background-image:
-    radial-gradient(900px 500px at 15% 5%, rgba(78, 205, 196, 0.10), transparent 55%),
-    radial-gradient(800px 500px at 85% 15%, rgba(167, 139, 250, 0.08), transparent 55%),
-    radial-gradient(700px 400px at 50% 95%, rgba(255, 107, 107, 0.06), transparent 50%);
+    /* Top-left Teal */
+    radial-gradient(1000px 600px at 15% 5%, rgba(78, 205, 196, 0.11), transparent 55%),
+    /* Top-right Purple */
+    radial-gradient(900px 500px at 85% 15%, rgba(167, 139, 250, 0.05), transparent 55%),
+    /* Mid-left Emerald Green */
+    radial-gradient(1000px 600px at 10% 45%, rgba(8, 226, 96, 0.05), transparent 50%),
+    /* Mid-right Coral Pink */
+    radial-gradient(900px 500px at 90% 60%, rgba(255, 107, 107, 0.09), transparent 50%),
+    /* Lower-left Soft Violet */
+    radial-gradient(800px 500px at 30% 75%, rgba(167, 139, 250, 0.1), transparent 50%),
+    /* Lower-right Bright Mint */
+    radial-gradient(1000px 600px at 80% 90%, rgba(78, 205, 196, 0.09), transparent 50%),
+    /* Bottom Center Coral */
+    radial-gradient(700px 400px at 50% 98%, rgba(255, 107, 107, 0.12), transparent 50%);
   background-attachment: fixed;
 }
 
@@ -114,6 +130,22 @@ body {
     radial-gradient(900px 500px at 15% 5%, rgba(232, 90, 79, 0.22), transparent 55%),
     radial-gradient(800px 500px at 85% 15%, rgba(124, 92, 248, 0.16), transparent 55%),
     radial-gradient(700px 400px at 50% 95%, rgba(249, 168, 38, 0.18), transparent 50%);
+}
+
+/* ===== LIGHT MODE OVERRIDES ===== */
+[data-theme="light"] .style-card-bg {
+  background: linear-gradient(135deg, #d1ae9c 0%, #fff5ee 100%);
+  border: none;
+  box-shadow: none;
+}
+
+[data-theme="light"] .style-card-glass {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.92) 100%);
+  border-top: none;
+  border-right: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 h1, h2, h3, h4 {
@@ -236,7 +268,7 @@ h1, h2, h3, h4 {
 
 /* ===== STYLE CARDS — glass buttons matching DepthFold reference ===== */
 /* Structure: bright gradient bg → glass overlay (inset, top-right radius 100%)
- *   → orbit circles top-right → content below circles → bottom bar
+ *   → orbit circles left → content below circles → bottom bar
  *   with stat circles left + "Open ▼" right. No animation (front-only). */
 
 .style-card-wrapper {
@@ -270,33 +302,55 @@ h1, h2, h3, h4 {
   transition: border-color 0.25s ease;
 }
 
-/* Gradient background — bright color → almost white (like --ux-grad) */
+/* ===== Base Card Layer ===== */
+/* ===== Base Card Layer (With specular light glint in the top-right corner) ===== */
 .style-card-bg {
   position: absolute;
   inset: 0;
   border-radius: 50px;
-  /* Dark mode: teal bright → near white */
-  background: linear-gradient(135deg, #4ecdc4 0%, #e8fff9 100%);
+  
+  /* Specular reflection on the top-right (225deg) blending into deep slate-teal and navy */
+  background: linear-gradient(
+    225deg, 
+    rgba(247, 245, 245, 0.07) 0%, 
+    rgba(21, 26, 36, 0.8) 35%, 
+    #0a0e14 100%
+  );
+  
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 35px var(--dark-card-accent-glow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Glass overlay — covers ENTIRE card (inset 8px), like .ux-glass in reference.
- * border-top-right-radius: 100% creates the big curve in top-right corner.
- * White gradient bottom-to-top, semi-transparent so bright bg shows through.
- * White shadow under the curve blends with the bright bg. */
+/* ===== Glass Layer (Creates the physical glass sheen) ===== */
 .style-card-glass {
   position: absolute;
   inset: 8px;
   border-radius: 55px;
   border-top-right-radius: 100%;
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.82) 100%);
-  border-left: 1px solid rgba(255, 255, 255, 0.85);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+  
+  /* Dual-layer gradient: glossy diagonal sheen overlay + dark translucent glass body */
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 60%),
+    linear-gradient(135deg, rgba(21, 28, 38, 0.85) 0%, rgba(13, 18, 25, 0.7) 100%);
+  
+  /* Specular physical glass reflections (light strikes from the top-left) */
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  
   pointer-events: none;
-  /* White shadow under the curve — blends with bright bg */
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+  
+  /* Inset light reflections simulating bevel thickness on the edges */
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    inset 0 8px 16px rgba(255, 255, 255, 0.03),
+    0 12px 36px rgba(0, 0, 0, 0.45);
 }
-
-
 
 
 
@@ -305,14 +359,13 @@ h1, h2, h3, h4 {
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 /* ===== Orbit circles — Centered container with Top-Right anchoring ===== */
 
-
 .style-card-orbits {
   position: absolute;
   top: 50%;
-  left: 1.5rem; /* Margins on the left side of the card */
+  left: 1.5rem;
   transform: translateY(-50%);
-  width: 85px;  /* Decreased from 110px */
-  height: 85px; /* Decreased from 110px */
+  width: 85px;
+  height: 85px;
   z-index: 2;
   pointer-events: none;
 }
@@ -323,49 +376,71 @@ h1, h2, h3, h4 {
   aspect-ratio: 1;
   border-radius: 50%;
   top: 0;
-  right: 0; /* Kept top-right corner anchor */
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: rgba(100, 100, 111, 0.08) 6px 6px 14px 0;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.style-orbit--1 {
-  width: 85px;
-  top: 0;
   right: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0.25) 4px 4px 12px 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.style-orbit--2 {
-  width: 68px;
-  top: 5px;
-  right: 5px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.style-orbit--3 {
-  width: 51px;
-  top: 11px;
-  right: 11px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.style-orbit--4 {
-  width: 34px;
-  top: 17px;
-  right: 17px;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-/* Smallest center dot icon */
+/* Center dot icon with polished glass finish */
 .style-orbit--icon {
   width: 18px;
   top: 24px;
   right: 24px;
   display: grid;
   place-content: center;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--dark-card-accent);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 0 12px var(--dark-card-accent-glow);
+}
+
+.style-orbit--1 {
+  width: 85px;
+  top: 0;
+  right: 0;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.style-orbit--2 {
+  width: 68px;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+.style-orbit--3 {
+  width: 51px;
+  top: 11px;
+  right: 11px;
+  border-color: rgba(255, 255, 255, 0.03);
+}
+
+.style-orbit--4 {
+  width: 34px;
+  top: 17px;
+  right: 17px;
+  border-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Center dot icon with matching cool glow */
+.style-orbit--icon {
+  width: 18px;
+  top: 24px;
+  right: 24px;
+  display: grid;
+  place-content: center;
+  background: var(--dark-card-accent-bg);
+  color: var(--dark-card-accent);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 12px var(--dark-card-accent-glow);
 }
 
 .style-orbit--icon svg {
@@ -401,28 +476,25 @@ h1, h2, h3, h4 {
   padding: 18px 1.5rem 0 130px;
 }
 
-/* Title — same font as Move of the Day: Sora (var(--font-heading)),
- * same weight (600), responsive: text-xl md:text-2xl lg:text-3xl
- * = 20px / 24px / 30px (between old 20px and MotD's 24/30/36) */
+
+/* ===== 4. Card Content Layout ===== */
 .style-card-title {
   display: block;
   font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 1.25rem;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.015em;
   line-height: 1.2;
 }
 
-/* Description (like .ux-text) — same font family as title */
 .style-card-desc {
   display: block;
-  margin-top: 0.6rem;
+  margin-top: 0.7rem;
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.7);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.65);
 }
 
 /* ===== Bottom bar — stat circles left + Open ▼ right (like .ux-bottom) ===== */
@@ -443,7 +515,7 @@ h1, h2, h3, h4 {
   gap: 10px;
 }
 
-/* Stat circles — white, circular (like .ux-social-btn) */
+/* Stat circles — Shared white design with violet text */
 .style-stat {
   display: flex;
   align-items: center;
@@ -451,9 +523,16 @@ h1, h2, h3, h4 {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: rgba(0, 0, 0, 0.15) 0 8px 6px -5px;
+  background: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 8px 16px -4px;
   position: relative;
+}
+
+.style-stat-value,
+.style-stat-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--dark-card-accent);
 }
 
 /* % ring stat */
@@ -462,7 +541,7 @@ h1, h2, h3, h4 {
   inset: 0;
   width: 32px;
   height: 32px;
-  color: var(--stat-color);
+   color: var(--dark-card-accent);
 }
 .style-stat-value {
   font-size: 0.5rem;
@@ -488,21 +567,23 @@ h1, h2, h3, h4 {
   padding-right: 14px;
 }
 
+/* Bottom Open action */
 .style-card-open-text {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   font-weight: 800;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--dark-card-accent);
+  text-shadow: 0 0 10px var(--dark-card-accent-glow);
 }
 
 .style-card-chevron-icon {
   width: 18px;
   height: 15px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--dark-card-accent);
+  filter: drop-shadow(0 0 5px var(--dark-card-accent-glow));
 }
-
 /* ===== LIGHT MODE — orange palette for all cards ===== */
 [data-theme="light"] .style-card-bg {
   background: linear-gradient(135deg, #d1ae9c 0%, #fff5ee 100%);
@@ -548,6 +629,25 @@ h1, h2, h3, h4 {
 [data-theme="light"] .style-card-chevron-icon {
   color: rgba(80, 30, 0, 0.5);
 }
+
+* Title color overrides - ONLY differences between cards */
+.style-card-wrapper:nth-child(1) .style-card-title {
+  color: #4ecdc4; /* Rueda de Casino (Teal) */
+  text-shadow: 0 0 15px rgba(78, 205, 196, 0.25);
+}
+.style-card-wrapper:nth-child(2) .style-card-title {
+  color: #f472b6; /* Son Cubano (Pink) */
+  text-shadow: 0 0 15px rgba(244, 114, 182, 0.25);
+}
+.style-card-wrapper:nth-child(3) .style-card-title {
+  color: #ff6b6b; /* Documentary (Orange/Coral) */
+  text-shadow: 0 0 15px rgba(255, 107, 107, 0.25);
+}
+.style-card-wrapper:nth-child(4) .style-card-title {
+  color: #a78bfa; /* Musicality (Purple) */
+  text-shadow: 0 0 15px rgba(167, 139, 250, 0.25);
+}
+
 
 /* ===== RESPONSIVE ===== */
 @media (min-width: 768px) {
