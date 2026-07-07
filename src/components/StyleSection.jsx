@@ -1,9 +1,10 @@
-import Chevron from './Chevron.jsx';
 import LevelSection from './LevelSection.jsx';
-import ProgressRing from './ProgressRing.jsx';
 import { getLevelsForStyle, getMovesForStyle, calcStats } from '../hooks/useClubData.js';
 
-/** Style section with circular progress ring and vibrant accent colors */
+/** Style section — glass card matching DepthFold reference structure:
+ *  Bright gradient bg → full glass overlay (inset, top-right radius 100%)
+ *  → orbit circles top-right → content below circles → bottom bar with
+ *  social/stat circles left + "Open ▼" right. */
 export default function StyleSection({
   data, style, isOpen, onToggle,
   openLevelId, onToggleLevel,
@@ -12,51 +13,78 @@ export default function StyleSection({
   const levels = getLevelsForStyle(data, style.id);
   const styleMoves = getMovesForStyle(data, style.id);
   const stats = calcStats(styleMoves, completedMoves);
+  const color = style.themeColor;
 
   return (
     <div
-      className={`mb-8 rounded-3xl overflow-hidden transition-all duration-400 style-section-glass${isOpen ? ' style-section-glass--open' : ''}`}
-      style={{
-        backdropFilter: 'blur(14px) saturate(140%)',
-        WebkitBackdropFilter: 'blur(14px) saturate(140%)',
-        '--style-color': style.themeColor,
-        contentVisibility: 'auto',
-        containIntrinsicSize: '800px',
-      }}
-      data-style-color={style.themeColor}
+      className={`mb-6 style-card-wrapper${isOpen ? ' style-card-wrapper--open' : ''}`}
+      style={{ '--style-color': color }}
+      data-style-color={color}
     >
       <button
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={`content-style-${style.id}`}
-        className="w-full text-left cursor-pointer flex items-center gap-4 p-5 md:p-7 transition-all duration-300 border-none bg-transparent"
-        style={{ background: isOpen ? `linear-gradient(135deg, ${style.themeColor}10, transparent)` : 'transparent' }}
+        className="style-card-btn"
       >
-        {/* Circular progress ring */}
-        <ProgressRing percent={stats.percent} size={64} stroke={4} color={style.themeColor}>
-          <div className="text-center">
-            <div className="text-xs font-bold" style={{ color: style.themeColor }}>{stats.percent}%</div>
-          </div>
-        </ProgressRing>
+        {/* Gradient background — bright color to almost white */}
+        <div className="style-card-bg" />
 
-        {/* Style info */}
-        <div className="flex-grow flex flex-col items-start gap-1 min-w-0">
-          <h2
-            className="font-[var(--font-display)] text-xl md:text-2xl lg:text-3xl font-semibold"
-            style={{ color: style.themeColor, textShadow: `0 0 20px ${style.themeColor}30` }}
-          >
-            {style.name}
-          </h2>
-          <p className="text-sm md:text-base" style={{ color: 'var(--text-secondary)' }}>{style.description}</p>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="w-2 h-2 rounded-full" style={{ background: style.themeColor }} />
-            <span className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>
-              {stats.completed} / {stats.total} moves mastered
-            </span>
-          </div>
+        {/* Glass overlay — covers entire card (inset 8px),
+            border-top-right-radius: 100% creates the curve */}
+        <div className="style-card-glass" />
+
+        {/* Orbiting glass circles — top right corner (decorative) */}
+        <div className="style-card-orbits" aria-hidden="true">
+          <span className="style-orbit style-orbit--1" />
+          <span className="style-orbit style-orbit--2" />
+          <span className="style-orbit style-orbit--3" />
+          <span className="style-orbit style-orbit--4" />
+          <span className="style-orbit style-orbit--icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" fill="currentColor" />
+            </svg>
+          </span>
         </div>
 
-        <Chevron open={isOpen} />
+        {/* Content — title + description, below the circles area */}
+        <div className="style-card-content">
+          <span className="style-card-title" style={{ color: color }}>
+            {style.name}
+          </span>
+          <span className="style-card-desc">{style.description}</span>
+        </div>
+
+        {/* Bottom bar — stat circles left + Open ▼ right */}
+        <div className="style-card-bottom">
+          <div className="style-card-stats">
+            <span className="style-stat" style={{ '--stat-color': color }}>
+              <svg className="style-stat-ring" viewBox="0 0 36 36" aria-hidden="true">
+                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="3" />
+                <circle
+                  cx="18" cy="18" r="15" fill="none" stroke="currentColor" strokeWidth="3"
+                  strokeDasharray={`${(stats.percent / 100) * 94.2} 94.2`}
+                  strokeLinecap="round"
+                  transform="rotate(-90 18 18)"
+                />
+              </svg>
+              <span className="style-stat-value">{stats.percent}%</span>
+            </span>
+            <span className="style-stat" style={{ '--stat-color': color }}>
+              <span className="style-stat-badge">{stats.completed}</span>
+            </span>
+            <span className="style-stat" style={{ '--stat-color': color }}>
+              <span className="style-stat-badge">{stats.total}</span>
+            </span>
+          </div>
+
+          <div className="style-card-more">
+            <span className="style-card-open-text">{isOpen ? 'Close' : 'Open'}</span>
+            <svg className="style-card-chevron-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        </div>
       </button>
 
       <div className={`accordion-grid ${isOpen ? 'is-open' : ''}`}>
@@ -69,7 +97,7 @@ export default function StyleSection({
                     key={level.id}
                     data={data}
                     level={level}
-                    styleColor={style.themeColor}
+                    styleColor={color}
                     isOpen={openLevelId === level.id}
                     onToggle={() => onToggleLevel(level.id)}
                     completedMoves={completedMoves}

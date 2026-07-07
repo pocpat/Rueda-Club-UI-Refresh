@@ -5,6 +5,7 @@
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-heading: "Sora", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+  --font-jakarta: "Plus Jakarta Sans", system-ui, sans-serif;
 
   --color-rueda-coral: #ff6b6b;
   --color-rueda-gold: #ffd93d;
@@ -401,35 +402,355 @@ h1, h2, h3, h4 {
   border-color: rgba(232, 90, 79, 0.3);
 }
 
-/* ===== STYLE SECTION GLASS BUTTONS ===== */
-/* Bold glass cards — translucent so snake is visible through them */
-.style-section-glass {
-  background: var(--glass);
-  border: 1.5px solid var(--glass-border);
-  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-}
-.style-section-glass--open {
-  border-color: var(--style-color, var(--glass-border));
-}
-.style-section-glass:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+/* ===== STYLE CARDS — glass buttons matching DepthFold reference ===== */
+/* Structure: bright gradient bg → glass overlay (inset, top-right radius 100%)
+ *   → orbit circles top-right → content below circles → bottom bar
+ *   with stat circles left + "Open ▼" right. No animation (front-only). */
+
+.style-card-wrapper {
+  position: relative;
+  border-radius: 50px;
+  overflow: hidden;
+  filter: drop-shadow(0 28px 50px rgba(0, 0, 0, 0.3));
 }
 
-/* Light mode: glass cards translucent like dark mode — snake visible through them */
-[data-theme="light"] .style-section-glass {
-  background: rgba(255, 255, 255, 0.25);
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 20px rgba(30, 20, 40, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+/* Open state — subtle border glow */
+.style-card-wrapper--open .style-card-btn {
+  border-color: var(--style-color);
 }
-[data-theme="light"] .style-section-glass--open {
-  border-color: var(--style-color, rgba(255, 255, 255, 0.3));
+
+/* The button — the card container (like .ux-card in reference) */
+.style-card-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 150px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  background: transparent;
+  box-shadow:
+    rgba(5, 71, 17, 0) 40px 50px 25px -40px,
+    rgba(0, 0, 0, 0.28) 0 25px 25px -5px;
+  transition: border-color 0.25s ease;
 }
-[data-theme="light"] .style-section-glass:hover {
-  background: rgba(255, 255, 255, 0.35);
-  border-color: rgba(255, 255, 255, 0.45);
-  box-shadow: 0 8px 30px rgba(30, 20, 40, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+/* Gradient background — bright color → almost white (like --ux-grad) */
+.style-card-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  /* Dark mode: teal bright → near white */
+  background: linear-gradient(135deg, #4ecdc4 0%, #e8fff9 100%);
+}
+
+/* Glass overlay — covers ENTIRE card (inset 8px), like .ux-glass in reference.
+ * border-top-right-radius: 100% creates the big curve in top-right corner.
+ * White gradient bottom-to-top, semi-transparent so bright bg shows through.
+ * White shadow under the curve blends with the bright bg. */
+.style-card-glass {
+  position: absolute;
+  inset: 8px;
+  border-radius: 55px;
+  border-top-right-radius: 100%;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.82) 100%);
+  border-left: 1px solid rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+  /* White shadow under the curve — blends with bright bg */
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+
+
+
+
+
+
+/* ////////////////////////////////////////////////////////////////////////////////////// */
+/* ===== Orbit circles — Centered container with Top-Right anchoring ===== */
+
+.style-card-orbits {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%); 
+  width: 110px;
+  height: 110px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.style-orbit {
+  display: block;
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  top: 0;
+  right: 0; /* Anchors the circles to the top-right corner of the group container */
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: rgba(100, 100, 111, 0.08) 6px 6px 14px 0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.style-orbit--1 {
+  width: 110px;
+  top: 0;
+  right: 0;
+}
+
+/* Offsets move progressively inward toward the top-right anchor */
+.style-orbit--2 {
+  width: 88px;
+  top: 7px;
+  right: 7px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.style-orbit--3 {
+  width: 66px;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.style-orbit--4 {
+  width: 44px;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Center dot icon */
+.style-orbit--icon {
+  width: 24px;
+  top: 34px;
+  right: 34px;
+  display: grid;
+  place-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.style-orbit--icon svg {
+  width: 10px;
+  height: 10px;
+  opacity: 0.6;
+  fill: currentColor;
+}
+
+
+
+/* ////////////////////////////////////////////////////////////////////////////////////// */
+
+
+
+
+
+
+
+
+
+
+
+/* ===== Content — title + description (RIGHT of orbit circles) ===== */
+.style-card-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  /* Left padding clears the orbit circles on the left (~120px).
+   * Title at the very top. */
+  padding: 14px 1.5rem 0 130px;
+}
+
+/* Title — same font as Move of the Day: Sora (var(--font-heading)),
+ * same weight (600), responsive: text-xl md:text-2xl lg:text-3xl
+ * = 20px / 24px / 30px (between old 20px and MotD's 24/30/36) */
+.style-card-title {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* Description (like .ux-text) — same font family as title */
+.style-card-desc {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Bottom bar — stat circles left + Open ▼ right (like .ux-bottom) ===== */
+.style-card-bottom {
+  position: absolute;
+  bottom: 14px;
+  left: 130px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 4;
+}
+
+.style-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Stat circles — white, circular (like .ux-social-btn) */
+.style-stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.15) 0 8px 6px -5px;
+  position: relative;
+}
+
+/* % ring stat */
+.style-stat-ring {
+  position: absolute;
+  inset: 0;
+  width: 32px;
+  height: 32px;
+  color: var(--stat-color);
+}
+.style-stat-value {
+  font-size: 0.5rem;
+  font-weight: 800;
+  color: var(--stat-color);
+  position: relative;
+  z-index: 1;
+}
+
+/* Number badge stats */
+.style-stat-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--stat-color);
+}
+
+/* "Open ▼" — text + downward chevron with space between (like .ux-more) */
+.style-card-more {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+  padding-right: 14px;
+}
+
+.style-card-open-text {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.style-card-chevron-icon {
+  width: 18px;
+  height: 15px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ===== LIGHT MODE — orange palette for all cards ===== */
+[data-theme="light"] .style-card-bg {
+  background: linear-gradient(135deg, #d1ae9c 0%, #fff5ee 100%);
+}
+
+[data-theme="light"] .style-card-glass {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.92) 100%);
+  border-left-color: rgba(255, 255, 255, 0.9);
+  border-bottom-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .style-card-desc {
+  color: rgba(80, 30, 0, 0.55);
+  text-shadow: none;
+}
+
+[data-theme="light"] .style-orbit {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: rgba(120, 60, 20, 0.08) -4px 4px 10px 0;
+}
+
+[data-theme="light"] .style-orbit--icon {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(80, 30, 0, 0.3);
+}
+
+[data-theme="light"] .style-stat {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: rgba(120, 60, 20, 0.08) 0 6px 6px -5px;
+}
+
+[data-theme="light"] .style-stat-value,
+[data-theme="light"] .style-stat-badge {
+  color: #e85a4f;
+}
+
+[data-theme="light"] .style-stat-ring {
+  color: #e85a4f;
+}
+
+[data-theme="light"] .style-card-open-text,
+[data-theme="light"] .style-card-chevron-icon {
+  color: rgba(80, 30, 0, 0.5);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px) {
+  .style-card-title { font-size: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .style-card-title { font-size: 1.875rem; }
+}
+@media (max-width: 640px) {
+  .style-card-btn { height: 130px; border-radius: 36px; }
+  .style-card-bg { border-radius: 36px; }
+  .style-card-glass { border-radius: 40px; border-top-right-radius: 100%; }
+  .style-card-content { padding: 10px 1.25rem 0 95px; }
+  .style-card-title { font-size: 1.3rem; }
+  .style-card-desc { font-size: 0.85rem; }
+
+
+
+/* Update these values inside the @media (max-width: 640px) block */
+.style-card-orbits { width: 20px; height: 20px; left: 5rem; top: 1.5rem}
+  .style-orbit--1 { width: 80px; top: 0; right: 0; }
+  .style-orbit--2 { width: 64px; top: 5px; right: 5px; }
+  .style-orbit--3 { width: 48px; top: 11px; right: 11px; }
+  .style-orbit--4 { width: 32px; top: 17px; right: 17px; }
+  .style-orbit--icon { width: 18px; top: 24px; right: 24px; }
+  .style-orbit--icon svg { width: 8px; height: 8px; }
+
+
+
+  .style-stat { width: 28px; height: 28px; }
+  .style-stat-ring { width: 28px; height: 28px; }
+  .style-stat-value { font-size: 0.45rem; }
+  .style-stat-badge { font-size: 0.55rem; }
+  .style-card-bottom { bottom: 16px; left: 16px; right: 16px; }
+  .style-card-open-text { font-size: 0.65rem; }
 }
 
 /* ===== ACCORDION ===== */
