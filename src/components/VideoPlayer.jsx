@@ -1,31 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { extractYouTubeVideoId, youtubeThumb } from '../lib/utils.js';
 
 /**
  * YouTube video player with facade pattern.
- * Fixed: uses useEffect to call onPlay AFTER React renders the visible container.
- * Fixed: prevents duplicate player creation with playRequestedRef guard.
+ * Uses plain <iframe> embeds instead of the IFrame JS API for mobile reliability.
  */
 export default function VideoPlayer({ video, title, index, playerKey, onPlay, shouldLoad, onLoaded }) {
   const [loaded, setLoaded] = useState(false);
-  const playRequestedRef = useRef(false);
   const videoId = extractYouTubeVideoId(video.url);
   const containerId = `player-${playerKey}-${index}`;
   const thumbUrl = video.thumbnail || (videoId ? youtubeThumb(videoId) : '/images/placeholder-video.svg');
 
-  // After `loaded` becomes true → React renders the visible container →
-  // then this effect fires → the div is now visible → YouTube API can attach.
-  useEffect(() => {
-    if (loaded && videoId && !playRequestedRef.current) {
-      playRequestedRef.current = true;
-      // requestAnimationFrame ensures the DOM has painted the visible div
-      requestAnimationFrame(() => {
-        onPlay(containerId, videoId);
-      });
-    }
-  }, [loaded, videoId, containerId, onPlay]);
-
-  // External trigger (chapter seek) — set loaded to true, effect will fire onPlay
+  // External trigger (chapter seek) — set loaded to true
   useEffect(() => {
     if (shouldLoad && !loaded) {
       setLoaded(true);
@@ -34,10 +20,13 @@ export default function VideoPlayer({ video, title, index, playerKey, onPlay, sh
   }, [shouldLoad, loaded, onLoaded]);
 
   const handlePlay = () => {
-    // If already loaded, don't try to load again (prevents the second-click error)
     if (loaded) return;
     setLoaded(true);
   };
+
+  const embedUrl = videoId
+    ? `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`
+    : '';
 
   return (
     <div className="flex flex-col gap-2">
@@ -77,7 +66,17 @@ export default function VideoPlayer({ video, title, index, playerKey, onPlay, sh
             </span>
           </button>
         )}
-        <div id={containerId} style={{ display: loaded ? 'block' : 'none', width: '100%', height: '100%' }} />
+        {loaded && embedUrl && (
+          <iframe
+            id={containerId}
+            src={embedUrl}
+            title={title || `Video ${index + 1}`}
+            className="absolute inset-0 w-full h-full"
+            style={{ border: 'none' }}
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+          />
+        )}
       </div>
     </div>
   );

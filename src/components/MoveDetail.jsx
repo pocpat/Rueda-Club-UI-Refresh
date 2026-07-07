@@ -41,10 +41,11 @@ export default function MoveDetail({
   });
 
   const handleChapterClick = (chap) => {
-    const playerEl = document.getElementById(chap.containerId);
-    if (playerEl && playerEl.style.display === 'none') {
+    const iframe = document.getElementById(chap.containerId);
+    if (!iframe || iframe.tagName !== 'IFRAME') {
+      // Video not loaded yet — trigger load, then seek after iframe renders
       setForceLoadIndex(chap.videoIndex);
-      setTimeout(() => onSeek(chap.containerId, chap.time), 2000);
+      setTimeout(() => onSeek(chap.containerId, chap.time), 2500);
     } else {
       onSeek(chap.containerId, chap.time);
     }

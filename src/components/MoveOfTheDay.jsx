@@ -1,24 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { extractYouTubeVideoId, youtubeThumb, stripMarkdown } from '../lib/utils.js';
 import TTSButton from './TTSButton.jsx';
 
 /** Move of the Day — circular hero card with orbital design */
 export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak }) {
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const playRequestedRef = useRef(false);
-
-  useEffect(() => {
-    if (videoLoaded && !playRequestedRef.current) {
-      const firstVideo = move?.videos?.[0];
-      if (firstVideo) {
-        const videoId = extractYouTubeVideoId(firstVideo.url);
-        if (videoId) {
-          playRequestedRef.current = true;
-          requestAnimationFrame(() => onPlayVideo('motw-player', videoId));
-        }
-      }
-    }
-  }, [videoLoaded, move, onPlayVideo]);
 
   if (!move) return null;
 
@@ -28,6 +14,10 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
   const excerpt = stripMarkdown(move.description).substring(0, 180);
   const lastSpace = excerpt.lastIndexOf(' ');
   const desc = lastSpace > 100 ? excerpt.substring(0, lastSpace) : excerpt;
+
+  const embedUrl = videoId
+    ? `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`
+    : '';
 
   return (
     <div
@@ -76,7 +66,17 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
                 </span>
               </button>
             )}
-            <div id="motw-player" style={{ display: videoLoaded ? 'block' : 'none', width: '100%', height: '100%' }} />
+            {videoLoaded && embedUrl && (
+              <iframe
+                id="motw-player"
+                src={embedUrl}
+                title={`${move.name} video`}
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none' }}
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+              />
+            )}
           </div>
         </div>
 
