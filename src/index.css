@@ -140,12 +140,11 @@ body {
 }
 
 [data-theme="light"] .style-card-glass {
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.92) 100%);
-  border-top: none;
-  border-right: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  background:
+    radial-gradient(80% 60% at 18% 14%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.5) 42%, transparent 72%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.92) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.6), 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 h1, h2, h3, h4 {
@@ -303,53 +302,53 @@ h1, h2, h3, h4 {
 }
 
 /* ===== Base Card Layer ===== */
-/* ===== Base Card Layer (With specular light glint in the top-right corner) ===== */
+/* ===== Base Card Layer ===== */
+/* Deep slate-teal base. The top-RIGHT corner is the darkest recess
+   (the glass curves away there, so this shows through as shadowed glass).
+   A soft accent glow blooms from the mid-left body; light reads as
+   coming from the top-left. */
 .style-card-bg {
   position: absolute;
   inset: 0;
   border-radius: 50px;
-  
-  /* Specular reflection on the top-right (225deg) blending into deep slate-teal and navy */
-  background: linear-gradient(
-    225deg, 
-    rgba(247, 245, 245, 0.07) 0%, 
-    rgba(21, 26, 36, 0.8) 35%, 
-    #0a0e14 100%
-  );
-  
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 
+  background:
+    radial-gradient(110% 80% at 22% 18%, rgba(78, 205, 196, 0.10), transparent 55%),
+    linear-gradient(135deg, rgba(31, 40, 54, 0.92) 0%, rgba(15, 20, 28, 0.96) 45%, #080b11 100%);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 0 35px var(--dark-card-accent-glow);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ===== Glass Layer (Creates the physical glass sheen) ===== */
+/* ===== Glass Layer (one continuous glass rectangle) ===== */
+/* Covers nearly the whole card (inset 3px) so there is no visible frame
+   ring. Borders are barely-there so the surface reads as one sheet of
+   glass, not a cut inset. Light reflection pools at the top-left and
+   sweeps faintly across the body; the top-right corner (where the
+   radius curves away) is left dark — the recessed glass corner. */
 .style-card-glass {
   position: absolute;
-  inset: 8px;
-  border-radius: 55px;
+  inset: 3px;
+  border-radius: 50px;
   border-top-right-radius: 100%;
-  
-  /* Dual-layer gradient: glossy diagonal sheen overlay + dark translucent glass body */
-  background: 
-    linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 60%),
-    linear-gradient(135deg, rgba(21, 28, 38, 0.85) 0%, rgba(13, 18, 25, 0.7) 100%);
-  
-  /* Specular physical glass reflections (light strikes from the top-left) */
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
-  border-left: 1px solid rgba(255, 255, 255, 0.14);
-  border-right: 1px solid rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  
+  background:
+    /* soft specular reflection pooling at top-left (the light source) */
+    radial-gradient(80% 60% at 18% 14%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03) 42%, transparent 72%),
+    /* faint diagonal sheen sweeping across the body */
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 32%, transparent 68%, rgba(255, 255, 255, 0.02) 100%),
+    /* translucent dark glass body — the base layer reads through */
+    linear-gradient(135deg, rgba(22, 30, 42, 0.42) 0%, rgba(8, 11, 17, 0.60) 100%);
+  /* single barely-visible edge — glass, not a cut line */
+  border: 1px solid rgba(255, 255, 255, 0.05);
   pointer-events: none;
-  
-  /* Inset light reflections simulating bevel thickness on the edges */
-  box-shadow: 
-    inset 0 1px 1px rgba(255, 255, 255, 0.15),
-    inset 0 8px 16px rgba(255, 255, 255, 0.03),
-    0 12px 36px rgba(0, 0, 0, 0.45);
+  /* light strikes from the top-left: only that edge catches a highlight */
+  box-shadow:
+    inset 1px 1px 1px rgba(255, 255, 255, 0.10),
+    inset 10px 10px 28px rgba(255, 255, 255, 0.018),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.18),
+    0 12px 36px rgba(0, 0, 0, 0.40);
 }
 
 
@@ -659,7 +658,7 @@ h1, h2, h3, h4 {
 @media (max-width: 640px) {
   .style-card-btn { height: 130px; border-radius: 36px; }
   .style-card-bg { border-radius: 36px; }
-  .style-card-glass { border-radius: 40px; border-top-right-radius: 100%; }
+  .style-card-glass { border-radius: 36px; border-top-right-radius: 100%; }
   .style-card-content { padding: 16px 1.25rem 0 95px; }
   .style-card-title { font-size: 1.3rem; }
   .style-card-desc { font-size: 0.85rem; }
