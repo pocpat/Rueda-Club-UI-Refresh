@@ -43,28 +43,7 @@
   50% { box-shadow: 0 0 40px rgba(78, 205, 196, 0.4); }
 }
 
-/* ===== SNAKE / FLOW ANIMATION ===== */
-/* Serpentine dots flowing along curvy paths — like dancers moving in a circle */
-@keyframes snakeFlow {
-  0%   { offset-distance: 0%;   opacity: 0; }
-  8%   { opacity: 0.7; }
-  92%  { opacity: 0.7; }
-  100% { offset-distance: 100%; opacity: 0; }
-}
 
-@keyframes snakeFlow2 {
-  0%   { offset-distance: 0%;   opacity: 0; }
-  12%  { opacity: 0.5; }
-  88%  { opacity: 0.5; }
-  100% { offset-distance: 100%; opacity: 0; }
-}
-
-@keyframes snakeFlow3 {
-  0%   { offset-distance: 0%;   opacity: 0; }
-  15%  { opacity: 0.4; }
-  85%  { opacity: 0.4; }
-  100% { offset-distance: 100%; opacity: 0; }
-}
 
 /* ===== THEME VARIABLES ===== */
 :root {
@@ -164,153 +143,6 @@ h1, h2, h3, h4 {
   opacity: var(--noise-opacity); mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
 }
-
-/* ===== FLOATING ORBS ===== */
-.bg-orbs { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
-.orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.18; pointer-events: none; }
-.orb-a { width: 500px; height: 500px; left: -200px; top: 60px; background: radial-gradient(circle at 30% 30%, var(--color-rueda-teal), transparent 55%); animation: float 12s ease-in-out infinite; }
-.orb-b { width: 450px; height: 450px; right: -200px; top: 400px; background: radial-gradient(circle at 30% 30%, var(--color-rueda-purple), transparent 55%); animation: float 14s ease-in-out infinite 2s; }
-.orb-c { width: 350px; height: 350px; left: 30%; bottom: -100px; background: radial-gradient(circle at 30% 30%, var(--color-rueda-coral), transparent 55%); animation: float 10s ease-in-out infinite 1s; }
-
-[data-theme="light"] .orb { opacity: 0.22; }
-
-/* ===== SNAKE FLOW BACKGROUND ===== */
-/* Subtle serpentine dots flowing along a curvy path — like dancers moving in a circle */
-.bg-snake {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.snake-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  offset-path: path("M -100 200 C 200 100, 400 300, 700 200 S 1100 100, 1400 250 S 1700 350, 2000 200");
-  offset-rotate: 0deg;
-  animation: snakeFlow 40s linear infinite;
-  filter: blur(1px);
-  box-shadow: 0 0 12px currentColor;
-}
-
-.snake-dot:nth-child(1) { animation-delay: 0s;   background: var(--accent); color: var(--accent); }
-.snake-dot:nth-child(2) { animation-delay: -2s;  background: var(--accent-2); color: var(--accent-2); }
-.snake-dot:nth-child(3) { animation-delay: -4s;  background: var(--accent-warm); color: var(--accent-warm); }
-.snake-dot:nth-child(4) { animation-delay: -6s;  background: #ffd93d; color: #ffd93d; }
-.snake-dot:nth-child(5) { animation-delay: -8s;  background: var(--accent); color: var(--accent); }
-.snake-dot:nth-child(6) { animation-delay: -10s; background: var(--accent-2); color: var(--accent-2); }
-.snake-dot:nth-child(7) { animation-delay: -12s; background: var(--accent-warm); color: var(--accent-warm); }
-.snake-dot:nth-child(8) { animation-delay: -14s; background: #ffd93d; color: #ffd93d; }
-
-/* Alt path dots — same palette, different offsets */
-.snake-dot--alt:nth-child(9)  { animation-delay: -1s;  background: var(--accent); color: var(--accent); }
-.snake-dot--alt:nth-child(10) { animation-delay: -3s;  background: var(--accent-2); color: var(--accent-2); }
-.snake-dot--alt:nth-child(11) { animation-delay: -5s;  background: var(--accent-warm); color: var(--accent-warm); }
-.snake-dot--alt:nth-child(12) { animation-delay: -7s;  background: #ffd93d; color: #ffd93d; }
-
-/* Alt2 path dots */
-.snake-dot--alt2:nth-child(13) { animation-delay: -1.5s; background: var(--accent-2); color: var(--accent-2); }
-.snake-dot--alt2:nth-child(14) { animation-delay: -4.5s; background: var(--accent-warm); color: var(--accent-warm); }
-.snake-dot--alt2:nth-child(15) { animation-delay: -7.5s; background: var(--accent); color: var(--accent); }
-
-.snake-dot--alt {
-  offset-path: path("M -100 500 C 300 600, 500 400, 800 550 S 1200 700, 1500 500 S 1800 350, 2100 500");
-  animation: snakeFlow2 50s linear infinite;
-}
-
-.snake-dot--alt2 {
-  offset-path: path("M -100 800 C 250 700, 550 900, 850 750 S 1250 600, 1550 800 S 1850 950, 2100 750");
-  animation: snakeFlow3 60s linear infinite;
-}
-
-[data-theme="light"] .snake-dot {
-  opacity: 0.7 !important;
-  filter: blur(0.5px);
-  box-shadow: 0 0 10px currentColor;
-}
-
-/* ===== SNAKE SCROLL ANIMATION ===== */
-/* Wavy SVG paths with dashed strokes that flow on scroll */
-.snake-scroll-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin: 0 auto;
-  pointer-events: none;
-  z-index: 0;
-  overflow: visible;
-  --strokeDashoffset: 0;
-}
-
-.snake-scroll-container svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  filter: blur(0.5px);
-  overflow: visible;
-}
-
-@media (min-width: 576px) {
-  .snake-scroll-container svg {
-    transform: scaleX(-1);
-  }
-}
-
-.snake-path {
-  fill: none;
-  stroke-linecap: round;
-  stroke-dashoffset: var(--strokeDashoffset);
-}
-
-/* Dark mode — teal/purple/coral/gold gradient */
-.snake-path-dark {
-  stroke: url(#snakeGradDark);
-  opacity: 0.5;
-}
-
-/* Each path has different dot/gap sizes for visual variety */
-.snake-path[href="#linePath01"] {
-  --dot: 20px; --gap: 50px;
-  stroke-dasharray: var(--dot) var(--gap) 120px var(--gap) var(--dot) var(--gap) 300px var(--gap) var(--dot) var(--gap) 150px var(--gap) var(--dot) 20000px;
-}
-.snake-path[href="#linePath02"] {
-  --dot: 34px; --gap: 60px;
-  stroke-dasharray: var(--dot) var(--gap) 120px var(--gap) var(--dot) var(--gap) 300px var(--gap) var(--dot) var(--gap) 150px var(--gap) var(--dot) 20000px;
-}
-.snake-path[href="#linePath03"] {
-  --dot: 25px; --gap: 40px;
-  stroke-dasharray: var(--dot) var(--gap) 120px var(--gap) var(--dot) var(--gap) 250px var(--gap) var(--dot) var(--gap) 150px var(--gap) var(--dot) 20000px;
-}
-.snake-path[href="#linePath04"] {
-  --dot: 40px; --gap: 70px;
-  stroke-dasharray: var(--dot) var(--gap) 100px var(--gap) var(--dot) var(--gap) 200px var(--gap) var(--dot) 20000px;
-}
-
-/* Light mode — warm orange/purple/gold gradient, slightly more visible */
-[data-theme="light"] .snake-path-dark {
-  stroke: url(#snakeGradLight);
-  opacity: 0.45;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .snake-scroll-container { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orb, .snake-dot, .animate-spin-slow, .animate-spin-reverse { animation: none !important; }
-  .animate-slide-down { animation: none !important; opacity: 1; transform: none; }
-}
-
-/* ===== ANIMATIONS ===== */
-/* slideDown kept for interactive dropdowns (search, mobile menu) */
-.animate-slide-down { animation: slideDown 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
 /* ===== GRADIENT TEXT ===== */
 .gradient-text {
@@ -473,13 +305,14 @@ h1, h2, h3, h4 {
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 /* ===== Orbit circles — Centered container with Top-Right anchoring ===== */
 
+
 .style-card-orbits {
   position: absolute;
   top: 50%;
-  left: 1rem;
-  transform: translateY(-50%); 
-  width: 110px;
-  height: 110px;
+  left: 1.5rem; /* Margins on the left side of the card */
+  transform: translateY(-50%);
+  width: 85px;  /* Decreased from 110px */
+  height: 85px; /* Decreased from 110px */
   z-index: 2;
   pointer-events: none;
 }
@@ -490,7 +323,7 @@ h1, h2, h3, h4 {
   aspect-ratio: 1;
   border-radius: 50%;
   top: 0;
-  right: 0; /* Anchors the circles to the top-right corner of the group container */
+  right: 0; /* Kept top-right corner anchor */
   background: rgba(255, 255, 255, 0.08);
   box-shadow: rgba(100, 100, 111, 0.08) 6px 6px 14px 0;
   backdrop-filter: blur(6px);
@@ -498,38 +331,37 @@ h1, h2, h3, h4 {
 }
 
 .style-orbit--1 {
-  width: 110px;
+  width: 85px;
   top: 0;
   right: 0;
 }
 
-/* Offsets move progressively inward toward the top-right anchor */
 .style-orbit--2 {
-  width: 88px;
-  top: 7px;
-  right: 7px;
+  width: 68px;
+  top: 5px;
+  right: 5px;
   background: rgba(255, 255, 255, 0.06);
 }
 
 .style-orbit--3 {
-  width: 66px;
-  top: 15px;
-  right: 15px;
+  width: 51px;
+  top: 11px;
+  right: 11px;
   background: rgba(255, 255, 255, 0.05);
 }
 
 .style-orbit--4 {
-  width: 44px;
-  top: 24px;
-  right: 24px;
+  width: 34px;
+  top: 17px;
+  right: 17px;
   background: rgba(255, 255, 255, 0.04);
 }
 
-/* Center dot icon */
+/* Smallest center dot icon */
 .style-orbit--icon {
-  width: 24px;
-  top: 34px;
-  right: 34px;
+  width: 18px;
+  top: 24px;
+  right: 24px;
   display: grid;
   place-content: center;
   background: rgba(255, 255, 255, 0.08);
@@ -537,8 +369,8 @@ h1, h2, h3, h4 {
 }
 
 .style-orbit--icon svg {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   opacity: 0.6;
   fill: currentColor;
 }
@@ -566,7 +398,7 @@ h1, h2, h3, h4 {
   z-index: 3;
   /* Left padding clears the orbit circles on the left (~120px).
    * Title at the very top. */
-  padding: 14px 1.5rem 0 130px;
+  padding: 18px 1.5rem 0 130px;
 }
 
 /* Title — same font as Move of the Day: Sora (var(--font-heading)),
@@ -728,7 +560,7 @@ h1, h2, h3, h4 {
   .style-card-btn { height: 130px; border-radius: 36px; }
   .style-card-bg { border-radius: 36px; }
   .style-card-glass { border-radius: 40px; border-top-right-radius: 100%; }
-  .style-card-content { padding: 10px 1.25rem 0 95px; }
+  .style-card-content { padding: 16px 1.25rem 0 95px; }
   .style-card-title { font-size: 1.3rem; }
   .style-card-desc { font-size: 0.85rem; }
 
