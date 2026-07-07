@@ -7,7 +7,7 @@ import TTSButton from './TTSButton.jsx';
 /** Move detail — immersive layout with circular chapter navigation */
 export default function MoveDetail({
   data, moveId, isCompleted, onBack,
-  onPlayVideo, onSeek, onSpeak, onToggleComplete,
+  onPlayVideo, onSeek, onSpeak, onToggleComplete, onRegisterPlayer,
 }) {
   const [forceLoadIndex, setForceLoadIndex] = useState(null);
   const move = findMove(data, moveId);
@@ -41,9 +41,9 @@ export default function MoveDetail({
   });
 
   const handleChapterClick = (chap) => {
-    const iframe = document.getElementById(chap.containerId);
-    if (!iframe || iframe.tagName !== 'IFRAME') {
-      // Video not loaded yet — trigger load, then seek after iframe renders
+    // If player not registered yet, trigger load then seek after it's ready
+    const player = document.getElementById(chap.containerId);
+    if (!player) {
       setForceLoadIndex(chap.videoIndex);
       setTimeout(() => onSeek(chap.containerId, chap.time), 2500);
     } else {
@@ -83,6 +83,7 @@ export default function MoveDetail({
                   onPlay={onPlayVideo}
                   shouldLoad={forceLoadIndex === vIdx}
                   onLoaded={() => {}}
+                  onRegisterPlayer={onRegisterPlayer}
                 />
               ))}
             </div>

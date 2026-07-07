@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import YouTube from 'react-youtube';
 import { extractYouTubeVideoId, youtubeThumb, stripMarkdown } from '../lib/utils.js';
 import TTSButton from './TTSButton.jsx';
 
 /** Move of the Day — circular hero card with orbital design */
 export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak }) {
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const playerRef = useRef(null);
 
   if (!move) return null;
 
@@ -15,9 +17,22 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
   const lastSpace = excerpt.lastIndexOf(' ');
   const desc = lastSpace > 100 ? excerpt.substring(0, lastSpace) : excerpt;
 
-  const embedUrl = videoId
-    ? `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`
-    : '';
+  const opts = {
+    width: '100%',
+    height: '100%',
+    playerVars: {
+      autoplay: 1,
+      playsinline: 1,
+      rel: 0,
+      modestbranding: 1,
+      origin: window.location.origin,
+    },
+  };
+
+  const onReady = (event) => {
+    playerRef.current = event.target;
+    event.target.playVideo();
+  };
 
   return (
     <div
@@ -66,16 +81,17 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
                 </span>
               </button>
             )}
-            {videoLoaded && embedUrl && (
-              <iframe
-                id="motw-player"
-                src={embedUrl}
-                title={`${move.name} video`}
-                className="absolute inset-0 w-full h-full"
-                style={{ border: 'none' }}
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
-              />
+            {videoLoaded && videoId && (
+              <div className="absolute inset-0 w-full h-full">
+                <YouTube
+                  videoId={videoId}
+                  opts={opts}
+                  onReady={onReady}
+                  className="w-full h-full"
+                  iframeClassName="absolute inset-0 w-full h-full"
+                  title={`${move.name} video`}
+                />
+              </div>
             )}
           </div>
         </div>

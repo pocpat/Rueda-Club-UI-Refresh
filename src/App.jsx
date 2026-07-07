@@ -18,7 +18,7 @@ export default function App() {
   const { theme, toggleTheme } = useTheme();
   const { moveId, navigateTo } = useRoute();
   const { speak } = useTTS();
-  const { initPlayer, seekTo, destroyPlayers } = useYouTubePlayer();
+  const { initPlayer, seekTo, destroyPlayers, registerPlayer } = useYouTubePlayer();
 
   const [openStyleId, setOpenStyleId] = useState(null);
   const [openLevelId, setOpenLevelId] = useState(null);
@@ -63,7 +63,7 @@ export default function App() {
           <MoveDetail
             data={data} moveId={moveId} isCompleted={isCompleted(moveId)}
             onBack={handleBack} onPlayVideo={initPlayer} onSeek={seekTo}
-            onSpeak={speak} onToggleComplete={toggleComplete}
+            onSpeak={speak} onToggleComplete={toggleComplete} onRegisterPlayer={registerPlayer}
           />
         ) : (
           <div className="flex flex-col">

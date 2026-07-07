@@ -1,46 +1,47 @@
-import { useCallback, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 /**
- * Hook to manage YouTube iframe players via postMessage API.
+ * Hook to manage YouTube players via react-youtube.
  *
- * Replaced the YouTube IFrame JS API with plain <iframe> embeds + enablejsapi=1.
- * The IFrame API approach broke on mobile (Android/Chrome): the async chain
- * (useEffect → requestAnimationFrame → setTimeout retries → onReady → playVideo)
- * lost the user gesture context, so the browser paused playback after ~0.5s.
- *
- * With plain iframes, the src is set as a direct result of the click (React state
- * update → iframe render), preserving the user gesture. Autoplay works reliably.
- * Chapter seeking uses postMessage to the iframe's contentWindow.
+ * The YouTube IFrame JS API and plain iframe approaches both broke on mobile:
+ * the async chain lost the user gesture context, causing playback to stall
+ * after ~0.5s. react-youtube manages the player lifecycle within React and
+ * gives us a ref to call playVideo/seekTo directly.
  */
 export function useYouTubePlayer() {
+  const playersRef = useRef({});
+
+  const registerPlayer = useCallback((containerId, player) => {
+    if (player) {
+      playersRef.current[containerId] = player;
+    }
+  }, []);
+
   const initPlayer = useCallback((_containerId, _videoId, _startTime = null) => {
-    // No-op: iframe is rendered directly by VideoPlayer / MoveOfTheDay.
-    // Kept for interface compatibility — App.jsx still passes it as onPlayVideo.
+    // No-op — react-youtube handles player creation.
+    // Kept for interface compatibility with App.jsx.
   }, []);
 
   const seekTo = useCallback((containerId, time) => {
-    const iframe = document.getElementById(containerId);
-    if (!iframe || !iframe.contentWindow) return;
-
-    iframe.contentWindow.postMessage(JSON.stringify({
-      event: 'command',
-      func: 'seekTo',
-      args: [time, true],
-    }), '*');
-    iframe.contentWindow.postMessage(JSON.stringify({
-      event: 'command',
-      func: 'playVideo',
-      args: [],
-    }), '*');
+    const player = playersRef.current[containerId];
+    if (!player) return;
+    try {
+      player.seekTo(time, true);
+      player.playVideo();
+    } catch (e) {
+      console.warn('seekTo failed:', e);
+    }
   }, []);
 
   const destroyPlayers = useCallback(() => {
-    // No-op: React handles iframe unmounting automatically.
+    Object.keys(playersRef.current).forEach((key) => {
+      delete playersRef.current[key];
+    });
   }, []);
 
   useEffect(() => {
     return () => destroyPlayers();
   }, [destroyPlayers]);
 
-  return { initPlayer, seekTo, destroyPlayers };
+  return { initPlayer, seekTo, destroyPlayers, registerPlayer };
 }
