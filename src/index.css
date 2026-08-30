@@ -417,9 +417,10 @@ h1, h2, h3, h4 {
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
   margin-bottom: 2.5rem;
+  max-width: 720px;
 }
 @media (min-width: 640px) {
-  .home-tiles { grid-template-columns: repeat(4, 1fr); }
+  .home-tiles { margin-left: 0; }
 }
 .home-tile {
   aspect-ratio: 1;
