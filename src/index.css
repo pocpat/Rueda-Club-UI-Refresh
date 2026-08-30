@@ -53,7 +53,8 @@
   --glass-shadow: 0 18px 50px rgba(13, 27, 42, 0.1);
   --shadow: 0 18px 50px rgba(13, 27, 42, 0.12);
   --shadow-sm: 0 10px 25px rgba(13, 27, 42, 0.08);
-  --header-bg: var(--navy);
+  --header-bg: #002A8F;
+  --header-bg-dark: #001E63;
   --header-fg: #FFFFFF;
   --tabbar-bg: var(--navy);
   --accent: var(--crimson);
@@ -87,7 +88,8 @@
   --glass-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
   --shadow-sm: 0 10px 25px rgba(0, 0, 0, 0.4);
-  --header-bg: rgba(9, 17, 29, 0.92);
+  --header-bg: #002A8F;
+  --header-bg-dark: #001A52;
   --header-fg: #FFFFFF;
   --tabbar-bg: #0A1420;
   --accent: #F43F5E;
@@ -172,6 +174,108 @@ h1, h2, h3, h4 {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   flex-shrink: 0;
 }
+
+/* ===== NAVBAR GRID — hamburger | logo | theme toggle ===== */
+.navbar-grid {
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  height: 4.5rem;
+}
+
+/* Hamburger — red button, 3 white lines */
+.hamburger-btn {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #E11D33 0%, #D90429 100%);
+  box-shadow: 0 4px 12px rgba(217, 4, 41, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.hamburger-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.hamburger-btn:active { transform: scale(0.95); }
+.hamburger-line {
+  display: block;
+  width: 20px; height: 2.5px;
+  border-radius: 2px;
+  background: #FFFFFF;
+}
+
+/* Theme toggle on blue navbar — white glass */
+.navbar-theme-btn {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  transition: transform 0.15s ease, background 0.15s ease;
+  justify-self: end;
+}
+.navbar-theme-btn:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-1px); }
+.navbar-theme-btn:active { transform: scale(0.95); }
+
+/* ===== DRAWER — slide-in menu from hamburger ===== */
+.drawer-overlay {
+  position: fixed; inset: 0;
+  z-index: 90;
+  background: rgba(13, 27, 42, 0.55);
+  backdrop-filter: blur(2px);
+  animation: drawerFade 0.2s ease;
+}
+@keyframes drawerFade { from { opacity: 0; } to { opacity: 1; } }
+.drawer {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 91;
+  width: min(320px, 85vw);
+  background: var(--bg-2);
+  border-right: 1px solid var(--glass-border);
+  box-shadow: 20px 0 60px rgba(13, 27, 42, 0.35);
+  padding: 20px 16px;
+  overflow-y: auto;
+  animation: drawerIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex; flex-direction: column;
+}
+@keyframes drawerIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+.drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.drawer-close {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.drawer-close:hover { color: var(--accent); border-color: var(--accent); }
+.drawer-section {
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 14px 4px 6px;
+}
+.drawer-link {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  padding: 12px 12px;
+  border: none; border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 700; font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.drawer-link:hover { background: var(--accent-glow); color: var(--accent); }
 
 /* ===== GRADIENT TEXT ===== */
 .gradient-text {

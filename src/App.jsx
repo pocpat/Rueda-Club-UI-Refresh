@@ -90,7 +90,15 @@ export default function App() {
         Skip to main content
       </a>
 
-      <Header theme={theme} onToggleTheme={toggleTheme} onHome={handleHome} />
+      <Header
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        onHome={() => { if (moveId || styleId || tab !== 'home') navigateTo({ tab: 'home' }); }}
+        onTab={handleTab}
+        onOpenStyle={(id) => navigateTo({ styleId: id })}
+        styles={data.styles}
+        active={activeTab}
+      />
 
       <main id="main-content" className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 pt-4 pb-28" style={{ zIndex: 1 }}>
         {moveId ? (
