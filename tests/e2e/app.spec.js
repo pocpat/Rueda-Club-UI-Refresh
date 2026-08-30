@@ -127,8 +127,8 @@ test.describe('Rueda Club — E2E', () => {
     await expect(page.getByText(/224 moves/)).toBeVisible();
   });
 
-  test('hero style shortcut navigates to class page', async ({ page }) => {
-    await page.goto('/');
+  test('Documentary class page opens from Classes tab', async ({ page }) => {
+    await page.goto('/?tab=classes');
     const docButton = page.getByRole('button', { name: /Documentary/i }).first();
     await docButton.click();
     await expect(page).toHaveURL(/\?style=style-documentary/, { timeout: 5000 });

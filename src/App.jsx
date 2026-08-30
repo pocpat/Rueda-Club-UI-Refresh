@@ -121,7 +121,6 @@ export default function App() {
           <HomePage
             data={data} motd={motd}
             onSelectMove={handleSelectMove} onSpeak={speak}
-            onOpenStyle={(id) => navigateTo({ styleId: id })}
             onFindClass={handleFindClass} onPlayMusic={handlePlayMusic}
             onChallenge={handleChallenge} onSelectLevel={handleSelectLevel}
           />
@@ -152,50 +151,19 @@ export default function App() {
 }
 
 /** Home — hero strip + Move of the Day + Quick Actions (level chips jump to class pages) */
-function HomePage({ data, motd, onSelectMove, onSpeak, onOpenStyle, onFindClass, onPlayMusic, onChallenge, onSelectLevel }) {
+function HomePage({ data, motd, onSelectMove, onSpeak, onFindClass, onPlayMusic, onChallenge, onSelectLevel }) {
   const danceStyles = data.styles.filter((s) => s.id !== 'style-musicality');
 
   return (
     <div className="tab-fade flex flex-col">
-      {/* Hero — flag + style shortcuts to class pages */}
-      <section className="relative rounded-2xl overflow-hidden mb-8 mt-2"
-        style={{
-          background: 'var(--glass-bg)',
-          backdropFilter: 'blur(14px)',
-          WebkitBackdropFilter: 'blur(14px)',
-          border: '1px solid var(--glass-border)',
-          boxShadow: 'var(--shadow-sm)',
-        }}
-      >
-        <div className="flex items-center gap-4 px-5 py-4 flex-wrap">
-          <div className="flex items-center gap-3 min-w-0">
-            <Flag />
-            <div className="min-w-0">
-              <p className="font-[var(--font-heading)] font-extrabold text-base sm:text-lg leading-tight" style={{ color: 'var(--text)' }}>
-                Your Cuban dance journey
-              </p>
-              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-                {data.moves.length} lessons · Rueda de Casino · Son Cubano · Documentary
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 sm:ml-auto flex-wrap">
-            {danceStyles.map((style) => (
-              <button key={style.id} className="btn btn-pill"
-                style={{
-                  padding: '8px 16px', fontSize: '0.8rem', minHeight: '40px',
-                  borderColor: style.themeColor + '55',
-                  background: `linear-gradient(135deg, ${style.themeColor}18, transparent)`,
-                  justifyContent: 'center',
-                }}
-                onClick={() => onOpenStyle(style.id)}
-              >
-                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: style.themeColor }} />
-                <span className="font-semibold">{style.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Hero — plain text title + subtitle (styles live in Classes tab & drawer) */}
+      <section className="mb-8 mt-2">
+        <h2 className="font-[var(--font-heading)] font-extrabold text-xl sm:text-2xl leading-tight" style={{ color: 'var(--text)' }}>
+          Your Cuban dance journey
+        </h2>
+        <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+          {data.moves.length} lessons · {danceStyles.map((s) => s.name).join(' · ')}
+        </p>
       </section>
 
       {/* Move of the Day */}
