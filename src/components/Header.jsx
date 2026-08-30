@@ -31,7 +31,7 @@ export default function Header({ theme, onToggleTheme, onHome, onTab, onOpenStyl
           background: 'var(--header-bg)',
           color: 'var(--header-fg)',
           borderBottom: '1px solid rgba(255,255,255,0.12)',
-          boxShadow: '0 12px 40px rgba(0, 42, 143, 0.35)',
+          boxShadow: '0 12px 40px rgba(13, 27, 42, 0.35)',
         }}
       >
         <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6">
