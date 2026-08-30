@@ -149,6 +149,7 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
     : null;
   const fullDesc = stripMarkdown(motd.description);
   const motdDesc = fullDesc.length > 150 ? fullDesc.slice(0, 150).trimEnd() + '…' : fullDesc;
+  const videoTitle = firstVideo?.title || motd.name;
   const motdLevel = data.levels.find((l) => l.id === motd.levelId);
   const motdStyle = motdLevel ? data.styles.find((s) => s.id === motdLevel.styleId) : null;
   const levelLabel = motdLevel
@@ -169,12 +170,8 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
 
       {/* 4 square tiles — Move of the day (with video preview) + the three styles */}
       <div className="home-tiles">
-        <div className="home-tile">
-          <span className="home-tile-kicker">Move of the day</span>
-          <span className="home-tile-title" lang="es">{motd.name}</span>
-          {levelLabel && (
-            <span className="home-tile-level">{levelLabel}</span>
-          )}
+        <div className="home-tile home-tile-motd">
+          <span className="home-tile-heading">Move of the day</span>
           {motdThumb && (
             <img
               className="home-tile-thumb"
@@ -184,7 +181,11 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
             />
           )}
+          <span className="home-tile-video-title" lang="es">{videoTitle}</span>
           <p className="home-tile-desc">{motdDesc}</p>
+          {levelLabel && (
+            <span className="home-tile-level">{levelLabel}</span>
+          )}
           <button className="tile-btn tile-btn-red" onClick={() => onSelectMove(motd.id)}>View</button>
         </div>
         {danceStyles.map((style) => (
