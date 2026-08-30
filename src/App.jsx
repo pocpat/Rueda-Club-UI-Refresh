@@ -9,7 +9,6 @@ import Header from './components/Header.jsx';
 import TabBar from './components/TabBar.jsx';
 import Flag from './components/Flag.jsx';
 import SearchBar from './components/SearchBar.jsx';
-import MoveOfTheDay from './components/MoveOfTheDay.jsx';
 import MoveDetail from './components/MoveDetail.jsx';
 import QuickActions from './components/QuickActions.jsx';
 import StyleSection from './components/StyleSection.jsx';
@@ -121,6 +120,7 @@ export default function App() {
           <HomePage
             data={data} motd={motd}
             onSelectMove={handleSelectMove} onSpeak={speak}
+            onOpenStyle={(id) => navigateTo({ styleId: id })}
             onFindClass={handleFindClass} onPlayMusic={handlePlayMusic}
             onChallenge={handleChallenge} onSelectLevel={handleSelectLevel}
           />
@@ -151,7 +151,7 @@ export default function App() {
 }
 
 /** Home — hero strip + Move of the Day + Quick Actions (level chips jump to class pages) */
-function HomePage({ data, motd, onSelectMove, onSpeak, onFindClass, onPlayMusic, onChallenge, onSelectLevel }) {
+function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onPlayMusic, onChallenge, onSelectLevel }) {
   const danceStyles = data.styles.filter((s) => s.id !== 'style-musicality');
 
   return (
@@ -166,8 +166,19 @@ function HomePage({ data, motd, onSelectMove, onSpeak, onFindClass, onPlayMusic,
         </p>
       </section>
 
-      {/* Move of the Day */}
-      <MoveOfTheDay move={motd} onSelectMove={onSelectMove} onSpeak={onSpeak} />
+      {/* 4 square tiles — Move of the day + the three styles */}
+      <div className="home-tiles">
+        <div className="home-tile">
+          <span className="home-tile-title">Move of the day</span>
+          <button className="tile-btn tile-btn-red" onClick={() => onSelectMove(motd.id)}>View</button>
+        </div>
+        {danceStyles.map((style) => (
+          <div key={style.id} className="home-tile">
+            <span className="home-tile-title">{style.name}</span>
+            <button className="tile-btn tile-btn-white" onClick={() => onOpenStyle(style.id)}>Open</button>
+          </div>
+        ))}
+      </div>
 
       {/* Quick Actions — square tiles + level chips */}
       <QuickActions

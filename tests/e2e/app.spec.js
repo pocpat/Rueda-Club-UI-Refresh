@@ -5,8 +5,8 @@ test.describe('Rueda Club — E2E', () => {
     await page.goto('/');
     // Header should be visible
     await expect(page.locator('header')).toBeVisible();
-    // Move of the Day label should appear
-    await expect(page.getByText('Move of the Day')).toBeVisible();
+    // Move of the day tile should appear
+    await expect(page.getByText('Move of the day')).toBeVisible();
   });
 
   test('sticky footer tab bar has 5 tabs', async ({ page }) => {
