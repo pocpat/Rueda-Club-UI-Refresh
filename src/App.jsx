@@ -42,7 +42,6 @@ export default function App() {
     else navigateTo({ tab: 'home' });
   }, [styleId, styleMap, navigateTo]);
 
-  const handleHome = useCallback(() => navigateTo({ tab: 'home' }), [navigateTo]);
   const handleTab = useCallback((t) => navigateTo({ tab: t }), [navigateTo]);
 
   // ===== Quick actions =====
@@ -54,21 +53,13 @@ export default function App() {
     if (pick) navigateTo({ moveId: pick.id, styleId: 'style-rueda-de-casino' });
   }, [data, navigateTo]);
 
-  // Dance challenge — random lesson from Rueda de Casino or Son Cubano
-  const handleChallenge = useCallback(() => {
-    const danceLevelIds = new Set(
-      data.levels
-        .filter((l) => l.styleId === 'style-rueda-de-casino' || l.styleId === 'style-son-cubano')
-        .map((l) => l.id)
-    );
-    const pool = data.moves.filter((m) => danceLevelIds.has(m.levelId) && m.videos?.length);
-    const pick = pickRandom(pool, 1)[0];
-    if (!pick) return;
-    const level = data.levels.find((l) => l.id === pick.levelId);
-    navigateTo({ moveId: pick.id, styleId: level ? level.styleId : '' });
-  }, [data, navigateTo]);
-
   const handlePlayMusic = useCallback(() => navigateTo({ tab: 'playlist' }), [navigateTo]);
+
+  // Search quick action → Classes tab with the search box focused
+  const handleSearch = useCallback(() => {
+    navigateTo({ tab: 'classes' });
+    setTimeout(() => document.getElementById('move-search')?.focus(), 250);
+  }, [navigateTo]);
 
   // Level chip / tile → open the level's class page
   const handleSelectLevel = useCallback((level) => {
@@ -119,10 +110,9 @@ export default function App() {
         ) : activeTab === 'home' ? (
           <HomePage
             data={data} motd={motd}
-            onSelectMove={handleSelectMove} onSpeak={speak}
-            onOpenStyle={(id) => navigateTo({ styleId: id })}
-            onFindClass={handleFindClass} onPlayMusic={handlePlayMusic}
-            onChallenge={handleChallenge} onSelectLevel={handleSelectLevel}
+            onSelectMove={handleSelectMove} onOpenStyle={(id) => navigateTo({ styleId: id })}
+            onFindClass={handleFindClass} onSearch={handleSearch}
+            onPlayMusic={handlePlayMusic} onSelectLevel={handleSelectLevel}
           />
         ) : activeTab === 'classes' ? (
           <ClassesPage
@@ -151,7 +141,7 @@ export default function App() {
 }
 
 /** Home — hero strip + Move of the Day + Quick Actions (level chips jump to class pages) */
-function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onPlayMusic, onChallenge, onSelectLevel }) {
+function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch, onPlayMusic, onSelectLevel }) {
   const danceStyles = data.styles.filter((s) => s.id !== 'style-musicality');
   const firstVideo = motd.videos?.[0];
   const motdThumb = firstVideo
@@ -159,6 +149,11 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onPlayMu
     : null;
   const fullDesc = stripMarkdown(motd.description);
   const motdDesc = fullDesc.length > 150 ? fullDesc.slice(0, 150).trimEnd() + '…' : fullDesc;
+  const motdLevel = data.levels.find((l) => l.id === motd.levelId);
+  const motdStyle = motdLevel ? data.styles.find((s) => s.id === motdLevel.styleId) : null;
+  const levelLabel = motdLevel
+    ? (motdStyle ? `${motdStyle.name.split(' ')[0]} ${motdLevel.name}` : motdLevel.name)
+    : null;
 
   return (
     <div className="tab-fade flex flex-col">
@@ -177,6 +172,9 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onPlayMu
         <div className="home-tile">
           <span className="home-tile-kicker">Move of the day</span>
           <span className="home-tile-title" lang="es">{motd.name}</span>
+          {levelLabel && (
+            <span className="home-tile-level">{levelLabel}</span>
+          )}
           {motdThumb && (
             <img
               className="home-tile-thumb"
@@ -201,8 +199,8 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onPlayMu
       <QuickActions
         levels={data.levels}
         onFindClass={onFindClass}
+        onSearch={onSearch}
         onPlayMusic={onPlayMusic}
-        onChallenge={onChallenge}
         onSelectLevel={onSelectLevel}
       />
 

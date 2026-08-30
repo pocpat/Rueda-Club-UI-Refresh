@@ -468,6 +468,18 @@ h1, h2, h3, h4 {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.home-tile-level {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #E0E1DD;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 3px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
 .tile-btn {
   width: 85%;
   border: none;
@@ -486,6 +498,7 @@ h1, h2, h3, h4 {
   .home-tile-thumb { display: none; }
   .home-tile-desc { display: none; }
   .home-tile-title { display: none; }
+  .home-tile-level { display: none; }
   .home-tile { justify-content: center; gap: 16px; }
   .home-tile-kicker { font-size: 0.72rem; color: #FFFFFF; }
 }

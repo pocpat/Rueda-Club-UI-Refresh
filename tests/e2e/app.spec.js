@@ -104,11 +104,11 @@ test.describe('Rueda Club — E2E', () => {
     await expect(page.locator('.move-card').first()).toBeVisible();
   });
 
-  test('Dance challenge opens a random Rueda/Son lesson', async ({ page }) => {
+  test('Search quick action opens Classes tab with search focused', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: /Dance challenge/i }).click();
-    await expect(page).toHaveURL(/\?move=/, { timeout: 5000 });
-    await expect(page.getByRole('button', { name: /back/i })).toBeVisible({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Search' }).click();
+    await expect(page).toHaveURL(/\?tab=classes/, { timeout: 5000 });
+    await expect(page.locator('#move-search')).toBeFocused({ timeout: 5000 });
   });
 
   test('theme toggle works', async ({ page }) => {

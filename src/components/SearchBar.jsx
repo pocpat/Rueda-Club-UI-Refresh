@@ -68,6 +68,7 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
         </svg>
         <input
           ref={inputRef}
+          id="move-search"
           type="search"
           value={query}
           onChange={(e) => { setQuery(e.target.value); setIsOpen(true); setActiveIndex(-1); }}
