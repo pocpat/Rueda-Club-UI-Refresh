@@ -1,13 +1,11 @@
-/** Quick Actions — square tiles (mockup style: white cards, crimson icon circles)
- *  + Level chips row (Foundations…Advanced, Son levels). */
+/** Quick Actions — circular red buttons (the circle IS the button), title underneath. */
 export default function QuickActions({ levels, onFindClass, onPlayMusic, onChallenge, onSelectLevel }) {
-  const tiles = [
+  const actions = [
     {
       label: 'Find class',
-      sub: 'Watch & repeat tutorial',
       onClick: onFindClass,
       icon: (
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
@@ -15,10 +13,9 @@ export default function QuickActions({ levels, onFindClass, onPlayMusic, onChall
     },
     {
       label: 'Play music',
-      sub: 'Musicality playlist',
       onClick: onPlayMusic,
       icon: (
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M9 18V5l12-2v13" />
           <circle cx="6" cy="18" r="3" />
           <circle cx="18" cy="16" r="3" />
@@ -27,10 +24,9 @@ export default function QuickActions({ levels, onFindClass, onPlayMusic, onChall
     },
     {
       label: 'Dance challenge',
-      sub: 'Random Rueda or Son',
       onClick: onChallenge,
       icon: (
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M8 21h8" />
           <path d="M12 17v4" />
           <path d="M7 4h10v4a5 5 0 0 1-10 0V4z" />
@@ -41,10 +37,9 @@ export default function QuickActions({ levels, onFindClass, onPlayMusic, onChall
     },
     {
       label: 'Level',
-      sub: 'Foundations → Advanced',
       onClick: onSelectLevel,
       icon: (
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2 2 7l10 5 10-5-10-5z" />
           <path d="M2 12l10 5 10-5" />
           <path d="M2 17l10 5 10-5" />
@@ -55,19 +50,20 @@ export default function QuickActions({ levels, onFindClass, onPlayMusic, onChall
 
   return (
     <section className="mb-10" aria-label="Quick actions">
-      <h2 className="font-[var(--font-heading)] text-lg font-semibold mb-3">Quick Actions</h2>
-      <div className="quick-tiles">
-        {tiles.map((t) => (
-          <button key={t.label} className="quick-tile" onClick={t.onClick}>
-            <span className="quick-tile-icon">{t.icon}</span>
-            <span className="quick-tile-label">{t.label}</span>
-            <span className="quick-tile-sub">{t.sub}</span>
-          </button>
+      <h2 className="font-[var(--font-heading)] text-lg font-semibold mb-4">Quick Actions</h2>
+      <div className="qa-row">
+        {actions.map((a) => (
+          <div key={a.label} className="qa-item">
+            <button className="qa-btn" onClick={a.onClick} aria-label={a.label}>
+              {a.icon}
+            </button>
+            <span className="qa-label">{a.label}</span>
+          </div>
         ))}
       </div>
 
-      {/* Level chips — jump straight to that level on its class page */}
-      <div className="level-chips mt-4">
+      {/* Level chips — jump straight to that level's class page */}
+      <div className="level-chips mt-5">
         {levels.map((l) => (
           <button key={l.id} className="level-chip" onClick={() => onSelectLevel(l)}>
             {l.name}
