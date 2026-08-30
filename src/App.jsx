@@ -7,6 +7,7 @@ import { getMoveOfTheDay, pickRandom, stripMarkdown, extractYouTubeVideoId, yout
 
 import Header from './components/Header.jsx';
 import TabBar from './components/TabBar.jsx';
+import BackButton from './components/BackButton.jsx';
 import Flag from './components/Flag.jsx';
 import SearchBar from './components/SearchBar.jsx';
 import MoveDetail from './components/MoveDetail.jsx';
@@ -38,9 +39,18 @@ export default function App() {
   }, [navigateTo, styleId]);
 
   const handleBack = useCallback(() => {
-    if (styleId && styleMap.has(styleId)) navigateTo({ styleId });
-    else navigateTo({ tab: 'home' });
-  }, [styleId, styleMap, navigateTo]);
+    // Move detail → its class page when opened from one, else Home.
+    // Every other page (class pages, tabs) → Home.
+    if (moveId) {
+      if (styleId && styleMap.has(styleId)) navigateTo({ styleId });
+      else navigateTo({ tab: 'home' });
+    } else {
+      navigateTo({ tab: 'home' });
+    }
+  }, [moveId, styleId, styleMap, navigateTo]);
+
+  // Every page except Home gets the shared Back button (same component, same place)
+  const showBack = Boolean(moveId || styleId || (tab && tab !== 'home'));
 
   const handleTab = useCallback((t) => navigateTo({ tab: t }), [navigateTo]);
 
@@ -92,6 +102,11 @@ export default function App() {
 
       <div className="app-sheet">
         <main id="main-content" className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 pt-5 pb-28" style={{ zIndex: 1 }}>
+        {/* Shared Back button — same component & same place (top-left, first element of main) on every page except Home.
+            Reuses the move-detail back behaviour: move → its class page, else Home. */}
+        {showBack && (
+          <BackButton onClick={handleBack} />
+        )}
         {moveId ? (
           <MoveDetail
             data={data} moveId={moveId} isCompleted={isCompleted(moveId)}

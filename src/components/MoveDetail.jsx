@@ -54,20 +54,7 @@ export default function MoveDetail({
 
   return (
     <div>
-      {/* Back button */}
-      <nav aria-label="Breadcrumb navigation" className="mb-6">
-        <button
-          onClick={onBack}
-          aria-label="Go back"
-          className="btn btn-ghost btn-pill"
-          style={{ minHeight: '44px' }}
-        >
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          Back
-        </button>
-      </nav>
+      {/* Back button comes from the shared BackButton in App (same one on every page) */}
 
       <article className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-6 mt-4">
         {/* Video column */}
