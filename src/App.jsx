@@ -100,7 +100,8 @@ export default function App() {
         active={activeTab}
       />
 
-      <main id="main-content" className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 pt-4 pb-28" style={{ zIndex: 1 }}>
+      <div className="app-sheet">
+        <main id="main-content" className="relative w-full max-w-[1200px] mx-auto px-4 sm:px-6 pt-5 pb-28" style={{ zIndex: 1 }}>
         {moveId ? (
           <MoveDetail
             data={data} moveId={moveId} isCompleted={isCompleted(moveId)}
@@ -142,7 +143,8 @@ export default function App() {
             isCompleted={isCompleted}
           />
         )}
-      </main>
+        </main>
+      </div>
 
       <TabBar active={activeTab} onTab={handleTab} />
     </>

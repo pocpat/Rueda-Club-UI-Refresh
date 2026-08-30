@@ -41,6 +41,7 @@
 
   --bg: #F8F9FA;
   --bg-2: #FFFFFF;
+  --page-behind: #0C1F3C;
   --text: #14202E;
   --text-secondary: rgba(13, 27, 42, 0.66);
   --text-muted: rgba(13, 27, 42, 0.42);
@@ -76,6 +77,7 @@
 [data-theme="dark"] {
   --bg: #0D1B2A;
   --bg-2: #1B263B;
+  --page-behind: #0A1830;
   --text: rgba(255, 255, 255, 0.92);
   --text-secondary: rgba(224, 225, 221, 0.62);
   --text-muted: rgba(224, 225, 221, 0.4);
@@ -108,25 +110,31 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--bg);
+  background-color: var(--page-behind);
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
   min-height: 100vh;
   transition: background-color 400ms ease, color 400ms ease;
-  /* White-dominant light bg with faint flag-tinted blooms */
+}
+
+/* ===== CONTENT SHEET — white body with rounded top corners over navy ===== */
+.app-sheet {
+  position: relative;
+  z-index: 1;
+  border-radius: 28px 28px 0 0;
+  min-height: calc(100vh - 4.5rem);
+  background-color: var(--bg);
   background-image:
     radial-gradient(900px 500px at 12% 0%, rgba(46, 95, 163, 0.07), transparent 55%),
     radial-gradient(700px 400px at 90% 8%, rgba(217, 4, 41, 0.05), transparent 55%),
     radial-gradient(800px 500px at 85% 95%, rgba(185, 152, 90, 0.06), transparent 55%);
-  background-attachment: fixed;
 }
 
-[data-theme="dark"] body {
+[data-theme="dark"] .app-sheet {
   background-image:
     radial-gradient(1000px 600px at 15% 0%, rgba(46, 95, 163, 0.16), transparent 55%),
-    radial-gradient(800px 500px at 88% 12%, rgba(217, 4, 41, 0.07), transparent 55%),
-    radial-gradient(900px 600px at 80% 95%, rgba(27, 38, 59, 0.9), transparent 60%);
+    radial-gradient(800px 500px at 88% 12%, rgba(217, 4, 41, 0.07), transparent 55%);
 }
 
 h1, h2, h3, h4 {
