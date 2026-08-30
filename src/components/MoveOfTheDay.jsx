@@ -2,9 +2,10 @@ import { useState, useRef } from 'react';
 import YouTube from 'react-youtube';
 import { extractYouTubeVideoId, youtubeThumb, stripMarkdown } from '../lib/utils.js';
 import TTSButton from './TTSButton.jsx';
+import Flag from './Flag.jsx';
 
-/** Move of the Day — circular hero card with orbital design */
-export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak }) {
+/** Move of the Day — circular hero card with orbital design, Cuban flag colors */
+export default function MoveOfTheDay({ move, onSelectMove, onSpeak }) {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const playerRef = useRef(null);
 
@@ -42,17 +43,17 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
         backdropFilter: 'blur(20px) saturate(160%)',
         WebkitBackdropFilter: 'blur(20px) saturate(160%)',
         border: '1px solid var(--glass-border)',
-        boxShadow: 'var(--glass-shadow), 0 0 60px rgba(78, 205, 196, 0.1)',
+        boxShadow: 'var(--glass-shadow)',
       }}
     >
-      {/* Decorative orbital rings in background */}
+      {/* Decorative orbital rings + flag */}
       <div className="absolute -top-20 -right-20 w-64 h-64 opacity-20 pointer-events-none">
         <svg viewBox="0 0 200 200" className="w-full h-full animate-spin-slow">
-          <circle cx="100" cy="100" r="90" fill="none" stroke="var(--accent)" strokeWidth="1" strokeDasharray="6 4"/>
-          <circle cx="100" cy="10" r="4" fill="var(--accent)"/>
-          <circle cx="190" cy="100" r="4" fill="var(--accent-warm)"/>
-          <circle cx="100" cy="190" r="4" fill="#ffd93d"/>
-          <circle cx="10" cy="100" r="4" fill="#a78bfa"/>
+          <circle cx="100" cy="100" r="90" fill="none" stroke="var(--accent)" strokeWidth="1" strokeDasharray="6 4" />
+          <circle cx="100" cy="10" r="4" fill="var(--accent)" />
+          <circle cx="190" cy="100" r="4" fill="#2E5FA3" />
+          <circle cx="100" cy="190" r="4" fill="var(--gold)" />
+          <circle cx="10" cy="100" r="4" fill="var(--crimson)" />
         </svg>
       </div>
 
@@ -60,8 +61,9 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
         {/* Video / image side */}
         <div className="relative p-6 md:p-8 flex flex-col gap-3">
           <div className="text-xs uppercase tracking-[0.2em] font-bold flex items-center gap-2" style={{ color: 'var(--accent)' }}>
-            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--accent-warm)' }} />
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--accent)' }} />
             Move of the Day
+            <Flag className="ml-1" />
           </div>
           <div className="relative aspect-video overflow-hidden rounded-2xl bg-black shadow-xl group">
             {!videoLoaded && firstVideo && (
@@ -98,13 +100,6 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
 
         {/* Info side */}
         <div className="flex flex-col justify-center gap-3 p-6 md:p-8 relative">
-          {/* Hero placeholder image area */}
-          <div className="absolute top-4 right-4 w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden opacity-30 pointer-events-none"
-            style={{ border: '2px dashed var(--glass-border)' }}
-          >
-            <img src="/images/placeholder-move.svg" alt="" className="w-full h-full object-cover" />
-          </div>
-
           <div className="flex items-center gap-2">
             <h2
               className="font-[var(--font-display)] text-2xl md:text-3xl lg:text-4xl font-semibold"
@@ -129,7 +124,7 @@ export default function MoveOfTheDay({ move, onSelectMove, onPlayVideo, onSpeak 
           </div>
           <button
             onClick={() => onSelectMove(move.id)}
-            className="btn btn-neon btn-pill self-start mt-3"
+            className="btn btn-primary btn-pill self-start mt-3"
             style={{ minHeight: '44px' }}
           >
             Explore This Move

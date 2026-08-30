@@ -60,7 +60,7 @@ export default function StyleSection({
           <div className="style-card-stats">
             <span className="style-stat" style={{ '--stat-color': color }}>
               <svg className="style-stat-ring" viewBox="0 0 36 36" aria-hidden="true">
-                <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="3" />
+                <circle cx="18" cy="18" r="15" fill="none" stroke="var(--stat-ring-track)" strokeWidth="3" />
                 <circle
                   cx="18" cy="18" r="15" fill="none" stroke="currentColor" strokeWidth="3"
                   strokeDasharray={`${(stats.percent / 100) * 94.2} 94.2`}

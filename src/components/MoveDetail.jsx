@@ -4,10 +4,11 @@ import { findMove } from '../hooks/useClubData.js';
 import VideoPlayer from './VideoPlayer.jsx';
 import TTSButton from './TTSButton.jsx';
 
-/** Move detail — immersive layout with circular chapter navigation */
+/** Move detail — immersive layout with circular chapter navigation + favorite heart */
 export default function MoveDetail({
   data, moveId, isCompleted, onBack,
   onPlayVideo, onSeek, onSpeak, onToggleComplete, onRegisterPlayer,
+  isFavorite, onToggleFavorite,
 }) {
   const [forceLoadIndex, setForceLoadIndex] = useState(null);
   const move = findMove(data, moveId);
@@ -16,7 +17,7 @@ export default function MoveDetail({
     return (
       <div className="text-center py-20">
         <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>Move not found.</p>
-        <button onClick={onBack} className="mt-4 font-semibold cursor-pointer" style={{ color: 'var(--accent)' }}>← Back to Dashboard</button>
+        <button onClick={onBack} className="mt-4 font-semibold cursor-pointer" style={{ color: 'var(--accent)' }}>← Back</button>
       </div>
     );
   }
@@ -57,14 +58,14 @@ export default function MoveDetail({
       <nav aria-label="Breadcrumb navigation" className="mb-6">
         <button
           onClick={onBack}
-          aria-label="Go back to dashboard"
+          aria-label="Go back"
           className="btn btn-ghost btn-pill"
           style={{ minHeight: '44px' }}
         >
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
-          Back to Dashboard
+          Back
         </button>
       </nav>
 
@@ -129,7 +130,7 @@ export default function MoveDetail({
                           onMouseEnter={(e) => {
                             e.currentTarget.style.borderColor = 'var(--accent)';
                             e.currentTarget.style.color = 'var(--accent)';
-                            e.currentTarget.style.boxShadow = '0 4px 15px rgba(78, 205, 196, 0.2)';
+                            e.currentTarget.style.boxShadow = '0 4px 15px var(--accent-glow)';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.borderColor = 'var(--glass-border)';
@@ -170,6 +171,22 @@ export default function MoveDetail({
                 {move.name}
               </h2>
               <TTSButton text={move.name} lang={move.lang || 'es-ES'} onSpeak={onSpeak} size="lg" />
+              {onToggleFavorite && (
+                <button
+                  type="button"
+                  onClick={() => onToggleFavorite(move.id)}
+                  aria-label={isFavorite ? `Remove ${move.name} from favorites` : `Add ${move.name} to favorites`}
+                  aria-pressed={isFavorite}
+                  className={`fav-btn${isFavorite ? ' is-fav' : ''}`}
+                  style={{ width: '44px', height: '44px' }}
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20"
+                    fill={isFavorite ? 'currentColor' : 'none'}
+                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
+                  </svg>
+                </button>
+              )}
             </div>
 
             <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
@@ -187,11 +204,11 @@ export default function MoveDetail({
               ))}
             </div>
 
-            {/* Complete button — gradient pill */}
+            {/* Complete button — crimson when not mastered, navy when done */}
             <button
               onClick={() => onToggleComplete(move.id)}
               aria-pressed={isCompleted}
-              className={`btn btn-pill w-full justify-center ${isCompleted ? 'btn-primary' : 'btn-warm'}`}
+              className={`btn btn-pill w-full justify-center ${isCompleted ? 'btn-navy' : 'btn-primary'}`}
               style={{ minHeight: '48px', fontSize: '1rem' }}
             >
               {isCompleted ? (

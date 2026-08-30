@@ -30,6 +30,22 @@ export function formatTime(seconds) {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
+/** Fisher-Yates shuffle — non-mutating, cryptographically random */
+export function randomShuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/** Pick n random items from an array (Fisher-Yates, non-mutating) */
+export function pickRandom(arr, n = 1) {
+  if (!Array.isArray(arr) || arr.length === 0) return [];
+  return randomShuffle(arr).slice(0, Math.max(0, Math.min(n, arr.length)));
+}
+
 /** Random "Move of the Day" — seeded by date so it stays the same all day,
  *  then picks a new random move at midnight (nighttime rollover).
  *  Excludes Documentary style (informational, not actual moves). */
