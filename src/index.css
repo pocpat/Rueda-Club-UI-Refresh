@@ -423,9 +423,9 @@ h1, h2, h3, h4 {
   border-radius: 18px;
   background: linear-gradient(160deg, #11264A 0%, #0C1F3C 55%, #0A1830 100%);
   color: #FFFFFF;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 14px;
-  padding: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 12px;
+  padding: 16px;
   box-shadow: 0 14px 30px rgba(12, 31, 60, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transition: transform 0.2s ease, box-shadow 0.25s ease;
 }
@@ -441,6 +441,33 @@ h1, h2, h3, h4 {
   color: #FFFFFF;
   line-height: 1.25;
 }
+.home-tile-kicker {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  flex-shrink: 0;
+}
+.home-tile-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 1;
+  min-height: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.home-tile-desc {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .tile-btn {
   border: none;
   cursor: pointer;
@@ -451,6 +478,15 @@ h1, h2, h3, h4 {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: transform 0.15s ease, filter 0.15s ease;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+@media (max-width: 639px) {
+  .home-tile-thumb { display: none; }
+  .home-tile-desc { display: none; }
+  .home-tile-title { display: none; }
+  .home-tile { justify-content: center; gap: 16px; }
+  .home-tile-kicker { font-size: 0.72rem; color: #FFFFFF; }
 }
 .tile-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
 .tile-btn:active { transform: scale(0.95); }

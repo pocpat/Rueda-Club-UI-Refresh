@@ -3,7 +3,7 @@ import { clubData } from './hooks/useClubData.js';
 import { useProgress, useTheme, useRoute, useFavorites } from './hooks/useStore.js';
 import { useTTS } from './hooks/useTTS.js';
 import { useYouTubePlayer } from './hooks/useYouTube.js';
-import { getMoveOfTheDay, pickRandom } from './lib/utils.js';
+import { getMoveOfTheDay, pickRandom, stripMarkdown, extractYouTubeVideoId, youtubeThumb } from './lib/utils.js';
 
 import Header from './components/Header.jsx';
 import TabBar from './components/TabBar.jsx';
@@ -153,6 +153,12 @@ export default function App() {
 /** Home — hero strip + Move of the Day + Quick Actions (level chips jump to class pages) */
 function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onPlayMusic, onChallenge, onSelectLevel }) {
   const danceStyles = data.styles.filter((s) => s.id !== 'style-musicality');
+  const firstVideo = motd.videos?.[0];
+  const motdThumb = firstVideo
+    ? (firstVideo.thumbnail || youtubeThumb(extractYouTubeVideoId(firstVideo.url)))
+    : null;
+  const fullDesc = stripMarkdown(motd.description);
+  const motdDesc = fullDesc.length > 150 ? fullDesc.slice(0, 150).trimEnd() + '…' : fullDesc;
 
   return (
     <div className="tab-fade flex flex-col">
@@ -166,10 +172,21 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onPlayMu
         </p>
       </section>
 
-      {/* 4 square tiles — Move of the day + the three styles */}
+      {/* 4 square tiles — Move of the day (with video preview) + the three styles */}
       <div className="home-tiles">
         <div className="home-tile">
-          <span className="home-tile-title">Move of the day</span>
+          <span className="home-tile-kicker">Move of the day</span>
+          <span className="home-tile-title" lang="es">{motd.name}</span>
+          {motdThumb && (
+            <img
+              className="home-tile-thumb"
+              src={motdThumb}
+              alt={`Preview of ${motd.name}`}
+              loading="lazy"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
+          )}
+          <p className="home-tile-desc">{motdDesc}</p>
           <button className="tile-btn tile-btn-red" onClick={() => onSelectMove(motd.id)}>View</button>
         </div>
         {danceStyles.map((style) => (
