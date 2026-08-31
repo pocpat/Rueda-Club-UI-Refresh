@@ -551,12 +551,19 @@ h1, h2, h3, h4 {
   background: var(--header-bg);
   color: #FFFFFF;
 }
-/* Levels page: non-interactive section header (no hover, full padding) */
+/* Levels page: section header row (inside the clickable button) */
+.level-page-btn {
+  display: block;
+  width: 100%;
+}
 .level-page-head {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px 6px;
+  padding: 14px 16px 10px;
+}
+.level-page-btn:hover .level-acc-title {
+  color: var(--accent);
 }
 [data-theme='dark'] .level-acc-count {
   background: var(--accent-2);
