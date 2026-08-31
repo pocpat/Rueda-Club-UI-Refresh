@@ -12,7 +12,8 @@ export default function ClassPage({
   const levels = getLevelsForStyle(data, style.id);
   const styleMoves = getMovesForStyle(data, style.id);
   const stats = calcStats(styleMoves, completedMoves);
-  const color = style.themeColor;
+  // Title + accent bars use the navbar background blue (not the per-style themeColor)
+  const color = 'var(--header-bg)';
   const openLevel = levels.find((l) => l.id === openLevelId);
 
   return (
