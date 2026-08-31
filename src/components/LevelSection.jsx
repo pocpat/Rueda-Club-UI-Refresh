@@ -2,7 +2,12 @@ import Chevron from './Chevron.jsx';
 import MoveCard from './MoveCard.jsx';
 import { getMovesForLevel, calcStats } from '../hooks/useClubData.js';
 
-/** Level section with progress bar and move cards */
+/** Level accordion header per new design:
+ *  - Level name in navbar-blue, plain (no card behind)
+ *  - Description + progress bar stay
+ *  - Completed/total counter = blue badge (navbar blue), white text
+ *  - Chevron trigger = red circle button (red BG + white font)
+ *  - Lesson grid content unchanged */
 export default function LevelSection({ data, level, styleColor, isOpen, onToggle, completedMoves, onSelectMove, onToggleComplete, onSpeak, isFavorite, onToggleFavorite }) {
   const moves = getMovesForLevel(data, level.id);
   if (moves.length === 0) return null;
@@ -17,10 +22,10 @@ export default function LevelSection({ data, level, styleColor, isOpen, onToggle
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={`content-level-${level.id}`}
-        className="w-full text-left cursor-pointer flex items-center gap-3 p-3 md:p-4 transition-all duration-200 border-none bg-transparent hover:bg-black/[0.03] rounded-2xl"
+        className="level-acc-btn w-full text-left cursor-pointer flex items-center gap-3 p-3 md:p-4 border-none bg-transparent rounded-2xl"
       >
         <div className="flex-grow flex flex-col items-start gap-1">
-          <h3 className="font-[var(--font-heading)] text-base md:text-lg font-semibold" style={{ color: 'var(--text)' }}>
+          <h3 className="level-acc-title font-[var(--font-heading)] text-base md:text-lg font-semibold">
             {level.name}
           </h3>
           <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{level.description}</p>
@@ -36,10 +41,13 @@ export default function LevelSection({ data, level, styleColor, isOpen, onToggle
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: 'var(--glass-bg)', color: 'var(--text-secondary)' }}>
+          <span className="level-acc-count text-xs font-bold px-2.5 py-1 rounded-full" aria-label={`${stats.completed} of ${stats.total} completed`}>
             {stats.completed}/{stats.total}
           </span>
-          <Chevron open={isOpen} />
+          <span className="flex flex-col items-center gap-1.5">
+            <span className="level-acc-view" aria-hidden="true">View</span>
+            <Chevron open={isOpen} red />
+          </span>
         </div>
       </button>
 

@@ -536,6 +536,45 @@ h1, h2, h3, h4 {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+/* Level accordion rows on class pages — navy-blue title (navbar bg color), no card behind */
+.level-acc-btn:hover {
+  background: rgba(13, 27, 42, 0.04);
+}
+.level-acc-title {
+  color: var(--header-bg);
+}
+[data-theme='dark'] .level-acc-title {
+  /* same blue must stay readable on dark bg — use the header's lighter edge */
+  color: var(--accent-2);
+}
+.level-acc-count {
+  background: var(--header-bg);
+  color: #FFFFFF;
+}
+[data-theme='dark'] .level-acc-count {
+  background: var(--accent-2);
+}
+/* White pill button (styled like the current page-title card look), above the red chevron */
+.level-acc-view {
+  display: inline-block;
+  padding: 6px 22px;
+  border-radius: 999px;
+  background: var(--bg-2);
+  border: 1px solid rgba(13, 27, 42, 0.12);
+  box-shadow: 0 2px 8px rgba(13, 27, 42, 0.08);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 1;
+}
+[data-theme='dark'] .level-acc-view {
+  background: #1B263B;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
 /* Tag chips on the style tiles (example: Partner required / Intermediate) */
 .home-tile-tags {
   display: flex;
