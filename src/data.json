@@ -5555,10 +5555,15 @@
     }
   ],
   "venue": {
-    "name": "Rueda Club NZ",
-    "status": "Training spot announced soon",
-    "note": "Our next training location is being confirmed. Follow us for the announcement.",
-    "mapsQuery": "Rueda Club NZ"
+    "name": "Covered stage area, corner of 254 Ponsonby Road",
+    "address": "254 Ponsonby Road, Auckland",
+    "description": "A covered 'stage' area in the park on the corner.",
+    "banner": "/images/venue-ponsonby.jpg",
+    "schedule": [
+      { "day": "Thursdays", "time": "7:30 PM – 9:30 PM" },
+      { "day": "Sundays", "time": "3:00 PM – 5:00 PM" }
+    ],
+    "mapsQuery": "254 Ponsonby Road, Auckland"
   },
   "songs": []
 }
