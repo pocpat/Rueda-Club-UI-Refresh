@@ -32,6 +32,7 @@
 /* ===== THEME VARIABLES ===== */
 /* Light mode (Cuban flag: white stripes dominant) — default */
 :root {
+  --red-cta: linear-gradient(135deg, #E11D33 0%, #D90429 100%);
   --navy: #0D1B2A;
   --navy-2: #1B263B;
   --crimson: #D90429;
@@ -199,7 +200,7 @@ h1, h2, h3, h4 {
   cursor: pointer;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 5px;
-  background: linear-gradient(135deg, #E11D33 0%, #D90429 100%);
+  background: var(--red-cta);
   box-shadow: 0 4px 12px rgba(217, 4, 41, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: transform 0.15s ease, filter 0.15s ease;
 }
@@ -392,7 +393,7 @@ h1, h2, h3, h4 {
   border: none;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, #E11D33 0%, #D90429 100%);
+  background: var(--red-cta);
   color: #FFFFFF;
   box-shadow: 0 8px 22px rgba(217, 4, 41, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.15s ease;
@@ -473,7 +474,7 @@ h1, h2, h3, h4 {
   height: 34px;
   padding: 0 9px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #E11D33 0%, #D90429 100%);
+  background: var(--red-cta);
   color: #FFFFFF;
   font-family: var(--font-heading);
   font-weight: 800;
@@ -647,7 +648,7 @@ h1, h2, h3, h4 {
 .tile-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
 .tile-btn:active { transform: scale(0.95); }
 .tile-btn-red {
-  background: linear-gradient(135deg, #E11D33 0%, #D90429 100%);
+  background: var(--red-cta);
   color: #FFFFFF;
   box-shadow: 0 6px 16px rgba(217, 4, 41, 0.35);
 }

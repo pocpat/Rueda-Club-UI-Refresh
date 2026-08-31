@@ -82,9 +82,12 @@ test.describe('Rueda Club — E2E', () => {
     await expect(page.getByText('Songs coming soon')).toBeVisible();
   });
 
-  test('Community tab shows venue placeholder', async ({ page }) => {
+  test('Community tab shows the real venue with banner + schedule', async ({ page }) => {
     await page.goto('/?tab=community');
-    await expect(page.getByText('Training spot announced soon')).toBeVisible();
+    await expect(page.getByText('254 Ponsonby Road, Auckland')).toBeVisible();
+    await expect(page.locator('.venue-banner img')).toBeVisible();
+    await expect(page.getByText('Thursdays')).toBeVisible();
+    await expect(page.getByText('Sundays')).toBeVisible();
   });
 
   test('Favorites tab shows empty state, hearting a lesson adds it', async ({ page }) => {
