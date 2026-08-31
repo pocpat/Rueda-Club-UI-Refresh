@@ -16,7 +16,7 @@ export default function LevelSection({ data, level, styleColor, isOpen, onToggle
 
   return (
     <div className="mb-2 last:mb-0 rounded-2xl overflow-hidden transition-all duration-300"
-      style={{ background: isOpen ? 'var(--glass-bg)' : 'transparent' }}
+      style={{ background: 'transparent' }}
     >
       <button
         onClick={onToggle}
@@ -44,10 +44,7 @@ export default function LevelSection({ data, level, styleColor, isOpen, onToggle
           <span className="level-acc-count text-xs font-bold px-2.5 py-1 rounded-full" aria-label={`${stats.completed} of ${stats.total} completed`}>
             {stats.completed}/{stats.total}
           </span>
-          <span className="flex flex-col items-center gap-1.5">
-            <span className="level-acc-view" aria-hidden="true">View</span>
-            <Chevron open={isOpen} red />
-          </span>
+          <Chevron open={isOpen} red />
         </div>
       </button>
 

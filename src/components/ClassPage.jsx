@@ -17,7 +17,7 @@ export default function ClassPage({
 
   return (
     <div className="tab-fade">
-      {/* Header card */}
+      {/* Header — plain on the grey page background (no white card) */}
       <div className="class-page-head mb-6" style={{ '--style-color': color }}>
         <div className="flex items-center gap-3 flex-wrap">
           <span className="style-dot" />
@@ -25,7 +25,7 @@ export default function ClassPage({
             {style.name}
           </h2>
           <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
-            style={{ background: 'var(--glass-2)', border: '1px solid var(--glass-border)', color: 'var(--text-secondary)' }}>
+            style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-secondary)' }}>
             Level {stats.percent}% · {stats.completed}/{stats.total}
           </span>
         </div>
@@ -36,7 +36,8 @@ export default function ClassPage({
 
       {levels.length > 0 ? (
         <>
-          <div>
+          {/* One white section wrapping ALL level accordions */}
+          <div className="class-page-body">
             {levels.map((level) => (
               <LevelSection
                 key={level.id}
