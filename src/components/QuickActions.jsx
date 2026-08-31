@@ -1,11 +1,6 @@
-/** Quick Actions — circular red buttons (the circle IS the button), title underneath. */
-export default function QuickActions({ levels, onFindClass, onSearch, onPlayMusic, onSelectLevel }) {
-  const scrollToLevels = () => {
-    const el = document.getElementById('level-chips');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    if (onSelectLevel) onSelectLevel();
-  };
-
+/** QuickActions — circular red buttons (the circle IS the button), title underneath.
+ *  Level chips moved to the Search page (SearchBar) as filter options. */
+export default function QuickActions({ onFindClass, onSearch, onPlayMusic }) {
   const actions = [
     {
       label: 'Find class',
@@ -38,17 +33,6 @@ export default function QuickActions({ levels, onFindClass, onSearch, onPlayMusi
         </svg>
       ),
     },
-    {
-      label: 'Level',
-      onClick: scrollToLevels,
-      icon: (
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2 2 7l10 5 10-5-10-5z" />
-          <path d="M2 12l10 5 10-5" />
-          <path d="M2 17l10 5 10-5" />
-        </svg>
-      ),
-    },
   ];
 
   return (
@@ -62,18 +46,6 @@ export default function QuickActions({ levels, onFindClass, onSearch, onPlayMusi
             </button>
             <span className="qa-label">{a.label}</span>
           </div>
-        ))}
-      </div>
-
-      {/* Level chips — jump straight to that level's class page */}
-      <div className="level-chips mt-5" id="level-chips">
-        {levels.map((l) => (
-          <button key={l.id} className="level-chip" onClick={() => onSelectLevel(l)}>
-            {l.name}
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </button>
         ))}
       </div>
     </section>

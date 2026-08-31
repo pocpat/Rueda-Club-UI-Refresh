@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 
-/** Autocomplete search with dropdown — vibrant circular-themed design */
+/** Autocomplete search with dropdown + level filter chips (toggle to narrow results) */
 export default function SearchBar({ moves, styles, levels, onSelect }) {
   const [query, setQuery] = useState('');
+  const [selectedLevels, setSelectedLevels] = useState(new Set());
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef(null);
@@ -11,11 +12,21 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
   const levelMap = useMemo(() => new Map(levels.map((l) => [l.id, l])), [levels]);
   const styleMap = useMemo(() => new Map(styles.map((s) => [s.id, s])), [styles]);
 
+  const toggleLevel = (levelId) => {
+    setSelectedLevels((prev) => {
+      const next = new Set(prev);
+      if (next.has(levelId)) next.delete(levelId);
+      else next.add(levelId);
+      return next;
+    });
+  };
+
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
     const results = [];
     for (const move of moves) {
+      if (selectedLevels.size > 0 && !selectedLevels.has(move.levelId)) continue;
       let source = null, context = null;
       if (move.name.toLowerCase().includes(q)) source = 'name';
       else if (move.tags?.some((t) => t.toLowerCase().includes(q))) {
@@ -34,7 +45,7 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
       }
     }
     return results.slice(0, 20);
-  }, [query, moves, levelMap, styleMap]);
+  }, [query, moves, levelMap, styleMap, selectedLevels]);
 
   useEffect(() => {
     const handler = (e) => {
@@ -93,6 +104,24 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
             e.target.style.boxShadow = 'none';
           }}
         />
+      </div>
+
+      {/* Level filter chips — toggle to narrow the search results */}
+      <div className="level-chips mt-3" role="group" aria-label="Filter by level">
+        {levels.map((l) => {
+          const active = selectedLevels.has(l.id);
+          return (
+            <button
+              key={l.id}
+              type="button"
+              className={`level-chip filter-chip${active ? ' is-active' : ''}`}
+              aria-pressed={active}
+              onClick={() => toggleLevel(l.id)}
+            >
+              {l.name}
+            </button>
+          );
+        })}
       </div>
 
       {isOpen && matches.length > 0 && (

@@ -71,12 +71,6 @@ export default function App() {
     setTimeout(() => document.getElementById('move-search')?.focus(), 250);
   }, [navigateTo]);
 
-  // Level chip / tile → open the level's class page
-  const handleSelectLevel = useCallback((level) => {
-    const style = styleMap.get(level.styleId);
-    if (style) navigateTo({ styleId: style.id });
-  }, [styleMap, navigateTo]);
-
   const motd = getMoveOfTheDay(data.moves, data.levels);
   const activeTab = styleId && styleMap.has(styleId) && !moveId ? 'classes' : tab;
 
@@ -127,7 +121,7 @@ export default function App() {
             data={data} motd={motd}
             onSelectMove={handleSelectMove} onOpenStyle={(id) => navigateTo({ styleId: id })}
             onFindClass={handleFindClass} onSearch={handleSearch}
-            onPlayMusic={handlePlayMusic} onSelectLevel={handleSelectLevel}
+            onPlayMusic={handlePlayMusic}
           />
         ) : activeTab === 'classes' ? (
           <ClassesPage
@@ -156,7 +150,7 @@ export default function App() {
 }
 
 /** Home — hero strip + Move of the Day + Quick Actions (level chips jump to class pages) */
-function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch, onPlayMusic, onSelectLevel }) {
+function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch, onPlayMusic }) {
   const danceStyles = data.styles.filter((s) => s.id !== 'style-musicality');
   const firstVideo = motd.videos?.[0];
   const motdThumb = firstVideo
@@ -241,13 +235,11 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
         })}
       </div>
 
-      {/* Quick Actions — square tiles + level chips */}
+      {/* Quick Actions — circular red buttons */}
       <QuickActions
-        levels={data.levels}
         onFindClass={onFindClass}
         onSearch={onSearch}
         onPlayMusic={onPlayMusic}
-        onSelectLevel={onSelectLevel}
       />
 
       {/* Small footer */}

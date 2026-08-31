@@ -706,6 +706,16 @@ h1, h2, h3, h4 {
   color: var(--accent);
   box-shadow: var(--shadow);
 }
+/* Filter-chip variant (Search page) — active state filled navy like the navbar */
+.filter-chip.is-active {
+  background: var(--header-bg);
+  border-color: var(--header-bg);
+  color: #FFFFFF;
+}
+.filter-chip.is-active:hover {
+  color: #FFFFFF;
+  border-color: var(--header-bg);
+}
 
 /* Style dot + class page header */
 .style-dot {
