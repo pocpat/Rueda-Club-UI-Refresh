@@ -36,25 +36,23 @@ export default function ClassPage({
 
       {levels.length > 0 ? (
         <>
-          {/* One white section wrapping ALL level accordions */}
-          <div className="class-page-body">
-            {levels.map((level) => (
-              <LevelSection
-                key={level.id}
-                data={data}
-                level={level}
-                styleColor={color}
-                isOpen={openLevelId === level.id}
-                onToggle={() => setOpenLevelId((p) => (p === level.id ? null : level.id))}
-                completedMoves={completedMoves}
-                onSelectMove={onSelectMove}
-                onToggleComplete={onToggleComplete}
-                onSpeak={onSpeak}
-                isFavorite={isFavorite}
-                onToggleFavorite={onToggleFavorite}
-              />
-            ))}
-          </div>
+          {/* Each level = its own white section */}
+          {levels.map((level) => (
+            <LevelSection
+              key={level.id}
+              data={data}
+              level={level}
+              styleColor={color}
+              isOpen={openLevelId === level.id}
+              onToggle={() => setOpenLevelId((p) => (p === level.id ? null : level.id))}
+              completedMoves={completedMoves}
+              onSelectMove={onSelectMove}
+              onToggleComplete={onToggleComplete}
+              onSpeak={onSpeak}
+              isFavorite={isFavorite}
+              onToggleFavorite={onToggleFavorite}
+            />
+          ))}
           {openLevel && (
             <p className="text-xs mt-4 mb-2" style={{ color: 'var(--text-muted)' }}>
               Tip: "{openLevel.name}" opens its lesson list here — tap any lesson to watch.

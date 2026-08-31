@@ -15,8 +15,8 @@ export default function LevelSection({ data, level, styleColor, isOpen, onToggle
   const stats = calcStats(moves, completedMoves);
 
   return (
-    <div className="mb-2 last:mb-0 rounded-2xl overflow-hidden transition-all duration-300"
-      style={{ background: 'transparent' }}
+    <div className="level-acc-wrap mb-3 last:mb-0 rounded-2xl overflow-hidden transition-all duration-300"
+      style={{ background: 'var(--bg-2)', boxShadow: 'var(--shadow-sm)' }}
     >
       <button
         onClick={onToggle}
