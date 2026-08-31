@@ -4,18 +4,27 @@
       "id": "style-rueda-de-casino",
       "name": "Rueda de Casino",
       "description": "The circular Cuban dance.",
+      "tileDescription": "Master the structure, calls, and energy of the dynamic Cuban circle dance. From fundamentals to complex figures, this curriculum covers it all.",
+      "tileTags": ["Partner required", "Intermediate", "Social dance"],
+      "tileButton": "Explore all courses",
       "themeColor": "#2E5FA3"
     },
     {
       "id": "style-son-cubano",
       "name": "Son Cubano",
       "description": "The elegant, traditional roots of Casino.",
+      "tileDescription": "Discover the elegant, counter-rhythm partner dance that is the soul of Cuban music. Body isolation, step technique, and musicality.",
+      "tileTags": ["Contra-tiempo", "Beginner-Advanced", "Elegance"],
+      "tileButton": "Explore Son courses",
       "themeColor": "#C0262D"
     },
     {
       "id": "style-documentary",
       "name": "Documentary",
       "description": "Films exploring Cuban dance history and culture.",
+      "tileDescription": "Go beyond the steps and explore the rich cultural history, major figures, and social evolution of Cuban dance. Feature length and short profiles.",
+      "tileTags": ["History", "Culture", "Stories"],
+      "tileButton": "View film library",
       "themeColor": "#D90429"
     },
     {

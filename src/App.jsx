@@ -223,7 +223,19 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
                   <span className="home-tile-count" aria-label={`${videoCount} videos`}>{videoCount}</span>
                 )}
               </div>
-              <button className="tile-btn tile-btn-white" onClick={() => onOpenStyle(style.id)}>Open</button>
+              {style.tileTags?.length > 0 && (
+                <div className="home-tile-tags">
+                  {style.tileTags.map((tag) => (
+                    <span key={tag} className="home-tile-tag">{tag}</span>
+                  ))}
+                </div>
+              )}
+              {style.tileDescription && (
+                <p className="home-tile-desc">{style.tileDescription}</p>
+              )}
+              <button className="tile-btn tile-btn-red" onClick={() => onOpenStyle(style.id)}>
+                {style.tileButton || 'Open'}
+              </button>
             </div>
           );
         })}
