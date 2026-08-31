@@ -177,8 +177,8 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
 
   return (
     <div className="tab-fade flex flex-col">
-      {/* Hero — plain text title + subtitle (styles live in Classes tab & drawer) */}
-      <section className="mb-8 mt-2">
+      {/* Hero — plain text title + subtitle; hidden on phones so tiles fit one screen */}
+      <section className="home-hero mb-8 mt-2">
         <h2 className="font-[var(--font-heading)] font-extrabold text-xl sm:text-2xl leading-tight" style={{ color: 'var(--text)' }}>
           Your Cuban dance journey
         </h2>
@@ -272,7 +272,7 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
       />
 
       {/* Small footer */}
-      <div className="text-center mt-10">
+      <div className="text-center mt-10 home-footer-credit">
         <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
           Rueda Club NZ — {data.moves.length} moves · {data.styles.length} styles · Built with ♥ for Cuban dance
         </p>

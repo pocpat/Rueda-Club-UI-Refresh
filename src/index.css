@@ -633,20 +633,30 @@ h1, h2, h3, h4 {
 .tile-btn-short { display: none; }
 .tile-btn-full { display: none; }
 @media (max-width: 479px) {
-  /* Small phones — keep title + thumb + VIEW; equal-height rows via stretch.
+  /* Small phones — no hero: tiles start right under the navbar, so
+     the 4 tiles + Quick Actions fit one screen without scrolling */
+  .home-hero { display: none; }
+  .home-tiles { margin-bottom: 1.25rem; gap: 10px; }
+  main { padding-top: 12px; }
+  .qa-btn { width: 56px; height: 56px; }
+  .qa-item { gap: 6px; }
+  .qa-label { font-size: 0.72rem; }
+  .home-tile .qa-spacer { display: none; }
+  /* keep title + thumb + VIEW; equal-height rows via stretch.
      Halved button height (~10% red coverage vs navy tile). */
   .home-tile-desc,
   .home-tile-level,
   .home-tile-video-title,
   .home-tile-tags,
   .home-tile-count { display: none; }
-  .home-tile { aspect-ratio: auto; min-height: 175px; gap: 10px; padding: 12px; }
+  .home-tile { aspect-ratio: auto; min-height: 168px; gap: 9px; padding: 11px; }
   .home-tile-clickable .tile-btn {
     padding: 3px 0;
     font-size: 0.68rem;
   }
   .tile-btn-short { display: inline; }
   .tile-btn-full { display: none; }
+  .home-footer-credit { display: none; }
 }
 @media (min-width: 480px) and (max-width: 639px) {
   /* Bigger phones — add badges, still short labels; equal heights via stretch */
