@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Created by https://www.toptal.com/developers/gitignore
+node_modules/
+dist/
+test-results/
+playwright-report/
+*.hermes-tmp*
+.hermes-tmp*
+*.local
