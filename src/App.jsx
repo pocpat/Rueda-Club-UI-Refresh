@@ -252,18 +252,18 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
   );
 }
 
-/** Classes — search + one card per style; opens the style's class page */
+/** Search — search + level filter chips + one card per style; opens the style's class page */
 function ClassesPage({ data, completedMoves, onOpenStyle, onSelectMove }) {
   return (
     <div className="tab-fade">
       <div className="class-page-head mb-6 flex items-center gap-4 flex-wrap">
         <Flag />
         <div>
-          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--text)' }}>
-            Classes
+          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--header-bg)' }}>
+            Search
           </h2>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            Pick a style to see its levels and lessons — watch, repeat, master.
+            Find any move — filter by level below.
           </p>
         </div>
       </div>

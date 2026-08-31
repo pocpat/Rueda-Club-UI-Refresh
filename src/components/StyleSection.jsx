@@ -49,7 +49,7 @@ export default function StyleSection({
 
         {/* Content — title + description, below the circles area */}
         <div className="style-card-content">
-          <span className="style-card-title" style={{ color: color }}>
+          <span className="style-card-title">
             {style.name}
           </span>
           <span className="style-card-desc">{style.description}</span>

@@ -1143,15 +1143,11 @@ h1, h2, h3, h4 {
 }
 [data-theme="dark"] .style-card-chevron-icon { color: #FF6B81; }
 
-/* Title color overrides — per card, theme-aware */
-.style-card-wrapper:nth-child(1) .style-card-title { color: #2E5FA3; }
-[data-theme="dark"] .style-card-wrapper:nth-child(1) .style-card-title { color: #5B8DD9; text-shadow: 0 0 15px rgba(91, 141, 217, 0.25); }
-.style-card-wrapper:nth-child(2) .style-card-title { color: #C0262D; }
-[data-theme="dark"] .style-card-wrapper:nth-child(2) .style-card-title { color: #FF6B81; text-shadow: 0 0 15px rgba(255, 107, 129, 0.25); }
-.style-card-wrapper:nth-child(3) .style-card-title { color: #D90429; }
-[data-theme="dark"] .style-card-wrapper:nth-child(3) .style-card-title { color: #FF4258; text-shadow: 0 0 15px rgba(217, 4, 41, 0.3); }
-.style-card-wrapper:nth-child(4) .style-card-title { color: #8F7440; }
-[data-theme="dark"] .style-card-wrapper:nth-child(4) .style-card-title { color: #D9B36C; text-shadow: 0 0 15px rgba(217, 179, 108, 0.25); }
+/* Title color overrides — per card, theme-aware.
+   Search page (used as its "buttons"): titles all navbar-blue on white cards,
+   matching the class-page headings. Circles w/ stats keep their accent colors. */
+.style-card-wrapper .style-card-title { color: var(--header-bg); }
+[data-theme="dark"] .style-card-wrapper .style-card-title { color: #9FB6D0; text-shadow: none; }
 
 /* ===== RESPONSIVE (style cards) ===== */
 @media (min-width: 768px) {
