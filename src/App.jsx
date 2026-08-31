@@ -210,17 +210,19 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
             .reduce((n, m) => n + (m.videos?.length || 0), 0);
           return (
             <div key={style.id} className="home-tile home-tile-style">
-              <img
-                className="home-tile-style-thumb"
-                src={`/images/${style.id}.jpg`}
-                alt={`${style.name} class`}
-                loading="lazy"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
-              />
-              {videoCount > 0 && (
-                <span className="home-tile-count" aria-label={`${videoCount} videos`}>{videoCount}</span>
-              )}
               <span className="home-tile-title">{style.name}</span>
+              <div className="home-tile-figure">
+                <img
+                  className="home-tile-style-thumb"
+                  src={`/images/${style.id}.jpg`}
+                  alt={`${style.name} class`}
+                  loading="lazy"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+                {videoCount > 0 && (
+                  <span className="home-tile-count" aria-label={`${videoCount} videos`}>{videoCount}</span>
+                )}
+              </div>
               <button className="tile-btn tile-btn-white" onClick={() => onOpenStyle(style.id)}>Open</button>
             </div>
           );
