@@ -1,14 +1,14 @@
-/** QuickActions — circular red buttons (the circle IS the button), title underneath.
- *  Level chips moved to the Search page (SearchBar) as filter options. */
-export default function QuickActions({ onFindClass, onSearch, onPlayMusic }) {
+/** QuickActions — circular red buttons, in order: Search, Play music, Level.
+ *  Level opens the by-level lesson browser (?tab=levels). */
+export default function QuickActions({ onFindClass, onSearch, onPlayMusic, onLevels }) {
   const actions = [
     {
-      label: 'Find class',
-      onClick: onFindClass,
+      label: 'Search',
+      onClick: onSearch,
       icon: (
         <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M22 9 12 4 2 9l10 5 10-5z" />
-          <path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5" />
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
       ),
     },
@@ -24,12 +24,13 @@ export default function QuickActions({ onFindClass, onSearch, onPlayMusic }) {
       ),
     },
     {
-      label: 'Search',
-      onClick: onSearch,
+      label: 'Level',
+      onClick: onLevels,
       icon: (
         <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          <path d="M12 2 2 7l10 5 10-5-10-5z" />
+          <path d="M2 12l10 5 10-5" />
+          <path d="M2 17l10 5 10-5" />
         </svg>
       ),
     },

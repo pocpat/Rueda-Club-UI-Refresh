@@ -12,6 +12,7 @@ import Flag from './components/Flag.jsx';
 import SearchBar from './components/SearchBar.jsx';
 import MoveDetail from './components/MoveDetail.jsx';
 import QuickActions from './components/QuickActions.jsx';
+import LevelsPage from './components/LevelsPage.jsx';
 import StyleSection from './components/StyleSection.jsx';
 import ClassPage from './components/ClassPage.jsx';
 import PlaylistPage from './components/PlaylistPage.jsx';
@@ -53,6 +54,9 @@ export default function App() {
   const showBack = Boolean(moveId || styleId || (tab && tab !== 'home'));
 
   const handleTab = useCallback((t) => navigateTo({ tab: t }), [navigateTo]);
+
+  // Level quick action → Levels page (lessons grouped by level, all styles)
+  const handleLevels = useCallback(() => navigateTo({ tab: 'levels' }), [navigateTo]);
 
   // ===== Quick actions =====
   // Find class — pure watch-&-repeat tutorial: a random Foundations lesson
@@ -121,13 +125,19 @@ export default function App() {
             data={data} motd={motd}
             onSelectMove={handleSelectMove} onOpenStyle={(id) => navigateTo({ styleId: id })}
             onFindClass={handleFindClass} onSearch={handleSearch}
-            onPlayMusic={handlePlayMusic}
+            onPlayMusic={handlePlayMusic} onLevels={handleLevels}
           />
         ) : activeTab === 'classes' ? (
           <ClassesPage
             data={data} completedMoves={completedMoves}
             onOpenStyle={(id) => navigateTo({ styleId: id })}
             onSelectMove={handleSelectMove}
+          />
+        ) : activeTab === 'levels' ? (
+          <LevelsPage
+            data={data} completedMoves={completedMoves}
+            onSelectMove={handleSelectMove} onToggleComplete={toggleComplete} onSpeak={speak}
+            isFavorite={isFavorite} onToggleFavorite={toggleFavorite}
           />
         ) : activeTab === 'playlist' ? (
           <PlaylistPage songs={data.songs} />
@@ -150,7 +160,7 @@ export default function App() {
 }
 
 /** Home — hero strip + Move of the Day + Quick Actions (level chips jump to class pages) */
-function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch, onPlayMusic }) {
+function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch, onPlayMusic, onLevels }) {
   const danceStyles = data.styles.filter((s) => s.id !== 'style-musicality');
   const firstVideo = motd.videos?.[0];
   const motdThumb = firstVideo
@@ -240,6 +250,7 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
         onFindClass={onFindClass}
         onSearch={onSearch}
         onPlayMusic={onPlayMusic}
+        onLevels={onLevels}
       />
 
       {/* Small footer */}
