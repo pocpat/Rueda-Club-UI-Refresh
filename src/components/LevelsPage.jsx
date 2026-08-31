@@ -44,7 +44,7 @@ export default function LevelsPage({ data, completedMoves, onSelectMove, onToggl
                   </h3>
                   <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{level.description}</p>
                 </div>
-                <span className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                <span className="flex flex-row items-center gap-2 flex-shrink-0">
                   <span className="level-acc-count text-xs font-bold px-2.5 py-1 rounded-full"
                     aria-label={`${stats.completed} of ${stats.total} completed`}>
                     {stats.completed}/{stats.total}
