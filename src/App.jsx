@@ -238,7 +238,8 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
                 <p className="home-tile-desc">{style.tileDescription}</p>
               )}
               <button className="tile-btn tile-btn-red" onClick={() => onOpenStyle(style.id)}>
-                {style.tileButton || 'Open'}
+                <span className="tile-btn-full">{style.tileButton || 'Open'}</span>
+                <span className="tile-btn-short" aria-hidden="true">View</span>
               </button>
             </div>
           );

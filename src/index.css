@@ -484,10 +484,14 @@ h1, h2, h3, h4 {
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
+/* Progressive disclosure across breakpoints:
+   - <480px (small phones): title + thumbnail + VIEW only
+   - ≥480px: + count badges and level tags
+   - ≥640px: + descriptions, full-length button labels */
 .home-tile-title {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.75rem;
+  font-size: clamp(1.05rem, 4.5vw, 1.75rem);
   text-align: center;
   color: #FFFFFF;
   line-height: 1.15;
@@ -497,7 +501,7 @@ h1, h2, h3, h4 {
 .home-tile-heading {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.75rem;
+  font-size: clamp(1.05rem, 4.5vw, 1.75rem);
   text-align: center;
   color: #FFFFFF;
   line-height: 1.15;
@@ -613,17 +617,32 @@ h1, h2, h3, h4 {
   margin-top: auto;
   flex-shrink: 0;
 }
-@media (max-width: 639px) {
-  .home-tile-thumb { display: none; }
-  .home-tile-desc { display: none; }
-  .home-tile-title { display: none; }
-  .home-tile-level { display: none; }
-  .home-tile-video-title { display: none; }
-  .home-tile-style-thumb,
-  .home-tile-figure,
+@media (max-width: 479px) {
+  /* Small phones — keep title + thumbnail + VIEW only, save space */
+  .home-tile-desc,
+  .home-tile-level,
+  .home-tile-video-title,
+  .home-tile-tags,
   .home-tile-count { display: none; }
-  .home-tile { justify-content: center; gap: 16px; }
-  .home-tile-heading { font-size: 0.85rem; color: #FFFFFF; }
+  .home-tile { aspect-ratio: auto; min-height: 0; gap: 10px; padding: 12px; }
+  .home-tile-thumb { flex: 0 0 auto; }
+  .tile-btn-short { display: inline; }
+  .tile-btn-full { display: none; }
+}
+@media (min-width: 480px) and (max-width: 639px) {
+  /* Bigger phones — add badges + tags, still short labels */
+  .home-tile { aspect-ratio: auto; gap: 10px; padding: 12px; }
+  .home-tile-tags { display: none; }
+  .home-tile-desc { display: none; }
+  .tile-btn-short { display: inline; }
+  .tile-btn-full { display: none; }
+}
+@media (max-width: 639px) {
+  .tile-btn { font-size: 0.72rem; padding: 9px 0; }
+}
+@media (min-width: 640px) {
+  .tile-btn-short { display: none; }
+  .tile-btn-full { display: inline; }
 }
 .tile-btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
 .tile-btn:active { transform: scale(0.95); }
