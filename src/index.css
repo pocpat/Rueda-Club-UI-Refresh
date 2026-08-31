@@ -436,11 +436,13 @@ h1, h2, h3, h4 {
 }
 .home-tile-title {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 1.75rem;
   text-align: center;
   color: #FFFFFF;
-  line-height: 1.25;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 .home-tile-heading {
   font-family: var(--font-heading);
