@@ -203,12 +203,28 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
           )}
           <button className="tile-btn tile-btn-red" onClick={() => onSelectMove(motd.id)}>View</button>
         </div>
-        {danceStyles.map((style) => (
-          <div key={style.id} className="home-tile">
-            <span className="home-tile-title">{style.name}</span>
-            <button className="tile-btn tile-btn-white" onClick={() => onOpenStyle(style.id)}>Open</button>
-          </div>
-        ))}
+        {danceStyles.map((style) => {
+          const levelIds = data.levels.filter((l) => l.styleId === style.id).map((l) => l.id);
+          const videoCount = data.moves
+            .filter((m) => levelIds.includes(m.levelId))
+            .reduce((n, m) => n + (m.videos?.length || 0), 0);
+          return (
+            <div key={style.id} className="home-tile home-tile-style">
+              <img
+                className="home-tile-style-thumb"
+                src={`/images/${style.id}.jpg`}
+                alt={`${style.name} class`}
+                loading="lazy"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+              {videoCount > 0 && (
+                <span className="home-tile-count" aria-label={`${videoCount} videos`}>{videoCount}</span>
+              )}
+              <span className="home-tile-title">{style.name}</span>
+              <button className="tile-btn tile-btn-white" onClick={() => onOpenStyle(style.id)}>Open</button>
+            </div>
+          );
+        })}
       </div>
 
       {/* Quick Actions — square tiles + level chips */}
