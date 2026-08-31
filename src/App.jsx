@@ -187,9 +187,18 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
         </p>
       </section>
 
-      {/* 4 square tiles — Move of the day (with video preview) + the three styles */}
+      {/* 4 square tiles — Move of the day (with video preview) + the three styles.
+          The whole tile is clickable (opens the same destination as its button);
+          the red button stays as a visual affordance — clicking it does the same thing. */}
       <div className="home-tiles">
-        <div className="home-tile home-tile-motd">
+        <div
+          className="home-tile home-tile-motd home-tile-clickable"
+          role="link"
+          tabIndex={0}
+          aria-label={`Open ${motd.name}`}
+          onClick={() => onSelectMove(motd.id)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectMove(motd.id); } }}
+        >
           <span className="home-tile-heading">Move of the day</span>
           {motdThumb && (
             <img
@@ -205,7 +214,7 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
           {levelLabel && (
             <span className="home-tile-level">{levelLabel}</span>
           )}
-          <button className="tile-btn tile-btn-red" onClick={() => onSelectMove(motd.id)}>View</button>
+          <span className="tile-btn tile-btn-red" aria-hidden="true">View</span>
         </div>
         {danceStyles.map((style) => {
           const levelIds = data.levels.filter((l) => l.styleId === style.id).map((l) => l.id);
@@ -213,7 +222,15 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
             .filter((m) => levelIds.includes(m.levelId))
             .reduce((n, m) => n + (m.videos?.length || 0), 0);
           return (
-            <div key={style.id} className="home-tile home-tile-style">
+            <div
+              key={style.id}
+              className="home-tile home-tile-style home-tile-clickable"
+              role="link"
+              tabIndex={0}
+              aria-label={`Open ${style.name}`}
+              onClick={() => onOpenStyle(style.id)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenStyle(style.id); } }}
+            >
               <span className="home-tile-title">{style.name}</span>
               <div className="home-tile-figure">
                 <img
@@ -237,10 +254,10 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
               {style.tileDescription && (
                 <p className="home-tile-desc">{style.tileDescription}</p>
               )}
-              <button className="tile-btn tile-btn-red" onClick={() => onOpenStyle(style.id)}>
+              <span className="tile-btn tile-btn-red" aria-hidden="true">
                 <span className="tile-btn-full">{style.tileButton || 'Open'}</span>
-                <span className="tile-btn-short" aria-hidden="true">View</span>
-              </button>
+                <span className="tile-btn-short">View</span>
+              </span>
             </div>
           );
         })}

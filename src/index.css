@@ -622,15 +622,29 @@ h1, h2, h3, h4 {
   transition: transform 0.15s ease, filter 0.15s ease;
   margin-top: auto;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+/* Tile button is an affordance, not a separate click target — pointer passes to the tile */
+.home-tile-clickable .tile-btn {
+  cursor: default;
+}
+.tile-btn-short { display: none; }
+.tile-btn-full { display: none; }
 @media (max-width: 479px) {
-  /* Small phones — keep title + thumb + VIEW; equal-height rows via stretch */
+  /* Small phones — keep title + thumb + VIEW; equal-height rows via stretch.
+     Halved button height (~10% red coverage vs navy tile). */
   .home-tile-desc,
   .home-tile-level,
   .home-tile-video-title,
   .home-tile-tags,
   .home-tile-count { display: none; }
   .home-tile { aspect-ratio: auto; min-height: 175px; gap: 10px; padding: 12px; }
+  .home-tile-clickable .tile-btn {
+    padding: 3px 0;
+    font-size: 0.68rem;
+  }
   .tile-btn-short { display: inline; }
   .tile-btn-full { display: none; }
 }
@@ -639,11 +653,17 @@ h1, h2, h3, h4 {
   .home-tile { aspect-ratio: auto; min-height: 230px; gap: 10px; padding: 12px; }
   .home-tile-tags { display: none; }
   .home-tile-desc { display: none; }
+  .home-tile-clickable .tile-btn {
+    padding: 4px 0;
+    font-size: 0.7rem;
+  }
   .tile-btn-short { display: inline; }
   .tile-btn-full { display: none; }
 }
 @media (max-width: 639px) {
-  .tile-btn { font-size: 0.72rem; padding: 9px 0; }
+  /* Desktop-height buttons only OUTSIDE the clickable tiles (e.g. future use);
+     tile buttons keep their slim heights above */
+  .tile-btn { font-size: 0.72rem; }
 }
 @media (min-width: 640px) {
   .tile-btn-short { display: none; }
