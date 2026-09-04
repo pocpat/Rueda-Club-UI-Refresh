@@ -135,7 +135,7 @@ export default function App() {
           />
         ) : activeTab === 'classes' ? (
           <ClassesPage
-            data={data} completedMoves={completedMoves}
+            data={data}
             onOpenStyle={(id) => navigateTo({ styleId: id })}
             onSelectMove={handleSelectMove}
           />
@@ -288,7 +288,7 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
 }
 
 /** Search — search + level filter chips + one card per style; opens the style's class page */
-function ClassesPage({ data, completedMoves, onOpenStyle, onSelectMove }) {
+function ClassesPage({ data, onOpenStyle, onSelectMove }) {
   return (
     <div className="tab-fade">
       <div className="class-page-head mb-6 flex items-center gap-4 flex-wrap">
