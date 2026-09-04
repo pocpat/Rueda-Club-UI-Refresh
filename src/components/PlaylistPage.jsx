@@ -8,7 +8,7 @@ export default function PlaylistPage({ songs }) {
       <div className="class-page-head mb-6 flex items-center gap-4 flex-wrap">
         <Flag />
         <div>
-          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--gold)' }}>
+          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--accent-2)' }}>
             Musicality
           </h2>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>

@@ -15,7 +15,7 @@ export default function CommunityPage({ venue }) {
       <div className="class-page-head mb-6 flex items-center gap-4 flex-wrap">
         <Flag />
         <div>
-          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--text)' }}>
+          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--accent-2)' }}>
             Where we train
           </h2>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>

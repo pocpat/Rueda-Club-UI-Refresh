@@ -23,7 +23,7 @@ export default function StyleSection({
           <span className="style-dot" />
           <span
             className="font-[var(--font-heading)] text-xl md:text-2xl font-extrabold"
-            style={{ color }}
+            style={{ color: 'var(--accent-2)' }}
           >
             {style.name}
           </span>

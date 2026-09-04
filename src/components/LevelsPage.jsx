@@ -14,7 +14,7 @@ export default function LevelsPage({ data, completedMoves, onSelectMove, onToggl
     <div className="tab-fade">
       {/* Header — same style as class pages */}
       <div className="class-page-head mb-6">
-        <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--header-bg)' }}>
+        <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--accent-2)' }}>
           Levels
         </h2>
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>

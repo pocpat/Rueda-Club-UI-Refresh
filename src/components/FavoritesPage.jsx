@@ -11,7 +11,7 @@ export default function FavoritesPage({ data, favorites, onSelectMove, onToggleC
           <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
         </svg>
         <div>
-          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--accent)' }}>
+          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--accent-2)' }}>
             Favorites
           </h2>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>

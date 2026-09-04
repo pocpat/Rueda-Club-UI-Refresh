@@ -185,7 +185,7 @@ function HomePage({ data, motd, onSelectMove, onOpenStyle, onFindClass, onSearch
     <div className="tab-fade flex flex-col">
       {/* Hero — plain text title + subtitle; hidden on phones so tiles fit one screen */}
       <section className="home-hero mb-8 mt-2">
-        <h2 className="font-[var(--font-heading)] font-extrabold text-xl sm:text-2xl leading-tight" style={{ color: 'var(--text)' }}>
+        <h2 className="font-[var(--font-heading)] font-extrabold text-xl sm:text-2xl leading-tight" style={{ color: 'var(--accent-2)' }}>
           Your Cuban dance journey
         </h2>
         <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
@@ -294,7 +294,7 @@ function ClassesPage({ data, onOpenStyle, onSelectMove }) {
       <div className="class-page-head mb-6 flex items-center gap-4 flex-wrap">
         <Flag />
         <div>
-          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--header-bg)' }}>
+          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--accent-2)' }}>
             Search
           </h2>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>

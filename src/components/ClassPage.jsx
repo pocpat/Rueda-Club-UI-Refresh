@@ -22,7 +22,7 @@ export default function ClassPage({
       <div className="class-page-head mb-6" style={{ '--style-color': color }}>
         <div className="flex items-center gap-3 flex-wrap">
           <span className="style-dot" />
-          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color }}>
+          <h2 className="font-[var(--font-heading)] text-2xl md:text-3xl font-extrabold" style={{ color: 'var(--accent-2)' }}>
             {style.name}
           </h2>
           <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
