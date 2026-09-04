@@ -207,6 +207,13 @@ All curriculum content lives in `public/data.json` (also available as `src/data.
 
 ---
 
+## Ownership
+
+Original design & code: Elena (@pocpat) — UI rebuild proposal.
+Maintained for Rueda Club NZ by Julio (forked/deployed from this repo).
+
+---
+
 ## License
 
 This is a UI redesign proposal. The original Rueda Club content and branding belong to their respective owners.
