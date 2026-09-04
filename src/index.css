@@ -815,8 +815,8 @@ input[type="search"]::-webkit-search-decoration {
 /* Style dot + class page header */
 .style-dot {
   width: 12px; height: 12px; border-radius: 50%;
-  background: var(--style-color, var(--accent));
-  box-shadow: 0 0 10px var(--style-color, var(--accent));
+  background: var(--accent-2);
+  box-shadow: 0 0 10px var(--accent-glow);
   flex-shrink: 0;
 }
 /* Class page — header sits plain on the grey page background; all level

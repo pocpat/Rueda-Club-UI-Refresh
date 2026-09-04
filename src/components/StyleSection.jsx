@@ -34,7 +34,7 @@ export default function StyleSection({
             {hasContent ? `${stats.total} lessons · ${levels.length} levels` : 'Coming soon'}
           </span>
           <span className="ml-auto flex items-center gap-1.5 font-[var(--font-jakarta)] font-extrabold text-xs uppercase tracking-widest"
-            style={{ color }}
+            style={{ color: 'var(--accent)' }}
           >
             Open
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
