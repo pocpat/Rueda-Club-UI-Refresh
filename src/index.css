@@ -752,6 +752,33 @@ h1, h2, h3, h4 {
   background: var(--accent-glow);
 }
 
+/* Run-search button — crimson circle inside the search field, right side */
+.search-run-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #E11D33 0%, #D90429 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(217, 4, 41, 0.3);
+  transition: transform 0.15s ease, filter 0.15s ease;
+  z-index: 5;
+}
+.search-run-btn:hover { filter: brightness(1.1); }
+.search-run-btn:active { transform: translateY(-50%) scale(0.92); }
+
+/* Hide the native search-cancel ✕ — the red run button replaces it */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 /* Level chips — quick action row (Foundations…Advanced) */
 .level-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .level-chip {

@@ -56,10 +56,15 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
   }, []);
 
   const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && matches.length > 0) selectItem(matches[activeIndex].move.id);
+      else runSearch();
+      return;
+    }
     if (!isOpen || matches.length === 0) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIndex((p) => Math.min(p + 1, matches.length - 1)); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIndex((p) => Math.max(p - 1, 0)); }
-    else if (e.key === 'Enter' && activeIndex >= 0) { e.preventDefault(); selectItem(matches[activeIndex].move.id); }
     else if (e.key === 'Escape') { setIsOpen(false); inputRef.current?.blur(); }
   };
 
@@ -67,9 +72,118 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
     setQuery(''); setIsOpen(false); setActiveIndex(-1); onSelect(moveId);
   };
 
+  // "Run the search" / Enter — go to the best match (first result)
+  const runSearch = (e) => {
+    if (e) e.preventDefault();
+    if (!query.trim()) { inputRef.current?.focus(); return; }
+    if (matches.length > 0) {
+      selectItem(matches[0].move.id);
+    } else {
+      setIsOpen(true); // show the "No moves found" state
+    }
+  };
+
+  // Mobile keyboard fix: a virtual keyboard shrinks window.visualViewport.
+  // Cap the results list to the actually-visible space, and flip it ABOVE the
+  // input when the space below is too small — so results never hide under
+  // the keyboard regardless of how far the page can scroll.
+  const listRef = useRef(null);
+  const [listPlacement, setListPlacement] = useState('below');
+  const [listMaxH, setListMaxH] = useState(340);
+  useEffect(() => {
+    if (!isOpen || matches.length === 0) return;
+    const fit = () => {
+      const input = inputRef.current;
+      if (!input) return;
+      const vv = window.visualViewport;
+      const vTop = vv ? vv.offsetTop : 0;
+      const vBottom = vv ? Math.min(vv.height + vv.offsetTop, window.innerHeight) : window.innerHeight;
+      const r = input.getBoundingClientRect();
+      const spaceBelow = vBottom - r.bottom - 12;
+      const spaceAbove = r.top - vTop - 12;
+      if (spaceBelow >= 180 || spaceBelow >= spaceAbove) {
+        setListPlacement('below');
+        setListMaxH(Math.max(120, Math.min(340, spaceBelow)));
+      } else if (spaceAbove > 120) {
+        setListPlacement('above');
+        setListMaxH(Math.max(120, Math.min(340, spaceAbove)));
+      }
+    };
+    fit();
+    const vv = window.visualViewport;
+    vv?.addEventListener('resize', fit);
+    window.addEventListener('scroll', fit, { passive: true });
+    return () => {
+      vv?.removeEventListener('resize', fit);
+      window.removeEventListener('scroll', fit);
+    };
+  }, [isOpen, matches.length]);
+
+  const resultsDropdown = isOpen && matches.length > 0 && (
+    <ul
+      ref={listRef}
+      role="listbox"
+      className="absolute left-0 w-full rounded-2xl p-2 list-none z-50 animate-slide-down"
+      style={{
+        maxHeight: listMaxH,
+        overflowY: 'auto',
+        ...(listPlacement === 'above'
+          ? { bottom: 'calc(100% + 8px)' }
+          : { top: 'calc(100% + 8px)' }),
+        background: 'var(--glass-bg)',
+        backdropFilter: 'blur(24px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+        border: '1px solid var(--glass-border)',
+        boxShadow: 'var(--glass-shadow)',
+      }}
+    >
+      {matches.map((item, i) => (
+        <li
+          key={item.move.id}
+          role="option"
+          aria-selected={i === activeIndex}
+          onClick={() => selectItem(item.move.id)}
+          className="px-3 py-2.5 cursor-pointer rounded-xl transition-all duration-150 flex items-center gap-3"
+          style={i === activeIndex ? { background: 'rgba(78, 205, 196, 0.12)' } : {}}
+          onMouseEnter={(e) => { if (i !== activeIndex) e.currentTarget.style.background = 'rgba(78, 205, 196, 0.06)'; }}
+          onMouseLeave={(e) => { if (i !== activeIndex) e.currentTarget.style.background = 'transparent'; }}
+        >
+          {/* Style color dot */}
+          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.styleColor || 'var(--accent)' }} />
+          <div className="flex flex-col gap-0.5 min-w-0 flex-grow">
+            <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60" style={{ color: 'var(--text-secondary)' }}>
+              {item.styleName} · {item.levelName}
+            </span>
+            <span className="font-medium text-sm" style={{ color: 'var(--text)' }} lang="es">{item.move.name}</span>
+          </div>
+          {item.context && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full flex-shrink-0"
+              style={{ background: 'rgba(78, 205, 196, 0.12)', color: 'var(--accent)', border: '1px solid rgba(78, 205, 196, 0.2)' }}
+            >
+              {item.source}: {item.context.length > 20 ? item.context.substring(0, 20) + '…' : item.context}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+
+  const noResultsBox = isOpen && query.trim() && matches.length === 0 && (
+    <div className="absolute left-0 w-full rounded-2xl p-4 text-center z-50 animate-slide-down"
+      style={{
+        top: 'calc(100% + 8px)',
+        background: 'var(--glass-bg)',
+        border: '1px solid var(--glass-border)',
+        color: 'var(--text-secondary)',
+      }}
+    >
+      No moves found for "{query}"
+    </div>
+  );
+
   return (
     <div ref={containerRef} className="relative w-full max-w-[600px] mx-auto mb-10">
-      <div className="relative">
+      <form className="relative" onSubmit={runSearch} role="search">
         <svg
           className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none z-10"
           viewBox="0 0 24 24" width="20" height="20" stroke="var(--accent)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"
@@ -87,7 +201,8 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
           onFocus={() => { if (query.trim()) setIsOpen(true); }}
           placeholder="Search moves..."
           aria-label="Search moves"
-          className="relative w-full py-3.5 pl-12 pr-4 rounded-full text-base font-sans transition-all duration-400 focus:outline-none"
+          enterKeyHint="search"
+          className="relative w-full py-3.5 pl-12 pr-16 rounded-full text-base font-sans transition-all duration-400 focus:outline-none"
           style={{
             background: 'var(--glass-bg)',
             backdropFilter: 'blur(16px)',
@@ -104,7 +219,20 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
             e.target.style.boxShadow = 'none';
           }}
         />
-      </div>
+        {/* Run-search button — explicit submit for mobile users */}
+        <button
+          type="submit"
+          aria-label="Run the search"
+          className="search-run-btn"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+        {resultsDropdown}
+        {noResultsBox}
+      </form>
 
       {/* Level filter chips — toggle to narrow the search results */}
       <div className="level-chips mt-3" role="group" aria-label="Filter by level">
@@ -123,57 +251,6 @@ export default function SearchBar({ moves, styles, levels, onSelect }) {
           );
         })}
       </div>
-
-      {isOpen && matches.length > 0 && (
-        <ul
-          role="listbox"
-          className="absolute top-full left-0 w-full max-h-[340px] overflow-y-auto rounded-2xl mt-2 p-2 list-none z-50 animate-slide-down"
-          style={{
-            background: 'var(--glass-bg)',
-            backdropFilter: 'blur(24px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-            border: '1px solid var(--glass-border)',
-            boxShadow: 'var(--glass-shadow)',
-          }}
-        >
-          {matches.map((item, i) => (
-            <li
-              key={item.move.id}
-              role="option"
-              aria-selected={i === activeIndex}
-              onClick={() => selectItem(item.move.id)}
-              className="px-3 py-2.5 cursor-pointer rounded-xl transition-all duration-150 flex items-center gap-3"
-              style={i === activeIndex ? { background: 'rgba(78, 205, 196, 0.12)' } : {}}
-              onMouseEnter={(e) => { if (i !== activeIndex) e.currentTarget.style.background = 'rgba(78, 205, 196, 0.06)'; }}
-              onMouseLeave={(e) => { if (i !== activeIndex) e.currentTarget.style.background = 'transparent'; }}
-            >
-              {/* Style color dot */}
-              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.styleColor || 'var(--accent)' }} />
-              <div className="flex flex-col gap-0.5 min-w-0 flex-grow">
-                <span className="text-[10px] uppercase tracking-wider font-semibold opacity-60" style={{ color: 'var(--text-secondary)' }}>
-                  {item.styleName} · {item.levelName}
-                </span>
-                <span className="font-medium text-sm" style={{ color: 'var(--text)' }} lang="es">{item.move.name}</span>
-              </div>
-              {item.context && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full flex-shrink-0"
-                  style={{ background: 'rgba(78, 205, 196, 0.12)', color: 'var(--accent)', border: '1px solid rgba(78, 205, 196, 0.2)' }}
-                >
-                  {item.source}: {item.context.length > 20 ? item.context.substring(0, 20) + '…' : item.context}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {isOpen && query.trim() && matches.length === 0 && (
-        <div className="absolute top-full left-0 w-full rounded-2xl mt-2 p-4 text-center z-50 animate-slide-down"
-          style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-secondary)' }}
-        >
-          No moves found for "{query}"
-        </div>
-      )}
     </div>
   );
 }

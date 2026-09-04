@@ -69,10 +69,16 @@ export default function App() {
 
   const handlePlayMusic = useCallback(() => navigateTo({ tab: 'playlist' }), [navigateTo]);
 
-  // Search quick action → Classes tab with the search box focused
+  // Search quick action → Classes tab, focus the box, center it so the
+  // results dropdown has room even with the mobile keyboard open
   const handleSearch = useCallback(() => {
     navigateTo({ tab: 'classes' });
-    setTimeout(() => document.getElementById('move-search')?.focus(), 250);
+    setTimeout(() => {
+      const el = document.getElementById('move-search');
+      if (!el) return;
+      el.focus({ preventScroll: true });
+      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 300);
   }, [navigateTo]);
 
   const motd = getMoveOfTheDay(data.moves, data.levels);
