@@ -310,14 +310,7 @@ function ClassesPage({ data, completedMoves, onOpenStyle, onSelectMove }) {
           <div key={style.id} id={`style-${style.id}`}>
             <StyleSection
               data={data} style={style}
-              isOpen={false}
               onToggle={() => onOpenStyle(style.id)}
-              openLevelId={null}
-              onToggleLevel={() => {}}
-              completedMoves={completedMoves}
-              onSelectMove={() => {}}
-              onToggleComplete={() => {}}
-              onSpeak={() => {}}
             />
           </div>
         ))}

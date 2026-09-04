@@ -994,6 +994,26 @@ input[type="search"]::-webkit-search-decoration {
 }
 .venue-btn:hover { filter: brightness(1.06); text-decoration: none; }
 
+/* ===== STYLE TILE — Search page cards, same UI as class-page-head ===== */
+.style-tile-btn {
+  border-radius: 20px;
+  padding: 18px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+}
+.style-tile-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--style-color, var(--accent));
+  box-shadow: var(--shadow);
+}
+.style-tile-btn:active { transform: translateY(0) scale(0.99); }
+
 /* ===== STYLE CARDS — glass buttons (structure preserved; recolored) ===== */
 .style-card-wrapper {
   position: relative;
