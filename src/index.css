@@ -228,7 +228,7 @@ h1, h2, h3, h4 {
 .navbar-theme-btn:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-1px); }
 .navbar-theme-btn:active { transform: scale(0.95); }
 
-/* ===== DRAWER — slide-in menu from hamburger ===== */
+/* ===== DRAWER — slide-in menu ===== */
 .drawer-overlay {
   position: fixed; inset: 0;
   z-index: 90;
@@ -251,6 +251,21 @@ h1, h2, h3, h4 {
   display: flex; flex-direction: column;
 }
 @keyframes drawerIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+
+/* Mobile: hamburger sits on the RIGHT — drawer slides in from the right */
+@media (max-width: 639px) {
+  .drawer-right {
+    left: auto; right: 0;
+    border-right: none;
+    border-left: 1px solid var(--glass-border);
+    box-shadow: -20px 0 60px rgba(13, 27, 42, 0.35);
+    animation: drawerInRight 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes drawerInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  /* Swap navbar sides: theme toggle left, hamburger right */
+  .navbar-theme-btn { order: -1; justify-self: start; }
+  .hamburger-btn { order: 3; justify-self: end; }
+}
 .drawer-head {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 14px;

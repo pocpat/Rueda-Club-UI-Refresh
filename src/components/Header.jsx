@@ -36,36 +36,7 @@ export default function Header({ theme, onToggleTheme, onHome, onTab, onOpenStyl
       >
         <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6">
           <div className="navbar-grid">
-            {/* Red hamburger — 3 white lines */}
-            <button
-              className="hamburger-btn"
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open menu"
-              aria-expanded={menuOpen}
-            >
-              <span className="hamburger-line" />
-              <span className="hamburger-line" />
-              <span className="hamburger-line" />
-            </button>
-
-            {/* Center — wooden sign logo with congas + claves */}
-            <div
-              className="flex justify-center cursor-pointer group"
-              onClick={onHome}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onHome(); }}
-              aria-label="Rueda Club — go to home"
-            >
-              <img
-                src="/images/mi-fg.png"
-                alt="Rueda Club sign with conga drums and claves"
-                className="sign-img group-hover:scale-105 transition-transform duration-300"
-                style={{ height: '54px' }}
-              />
-            </div>
-
-            {/* Right — day/night toggle */}
+            {/* Left on mobile / right on desktop: theme toggle */}
             <button
               onClick={onToggleTheme}
               aria-label="Toggle light/dark theme"
@@ -89,15 +60,45 @@ export default function Header({ theme, onToggleTheme, onHome, onTab, onOpenStyl
                 </svg>
               )}
             </button>
+
+            {/* Center — wooden sign logo with congas + claves */}
+            <div
+              className="flex justify-center cursor-pointer group"
+              onClick={onHome}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onHome(); }}
+              aria-label="Rueda Club — go to home"
+            >
+              <img
+                src="/images/mi-fg.png"
+                alt="Rueda Club sign with conga drums and claves"
+                className="sign-img group-hover:scale-105 transition-transform duration-300"
+                style={{ height: '54px' }}
+              />
+            </div>
+
+            {/* Right on mobile (thumb zone): red hamburger — 3 white lines */}
+            <button
+              className="hamburger-btn"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+            >
+              <span className="hamburger-line" />
+              <span className="hamburger-line" />
+              <span className="hamburger-line" />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Drawer menu */}
+      {/* Drawer menu — slides from the side where the hamburger lives
+          (right on mobile, left on desktop) */}
       {menuOpen && (
         <>
           <div className="drawer-overlay" onClick={() => setMenuOpen(false)} aria-hidden="true" />
-          <div className="drawer" role="dialog" aria-label="Menu">
+          <div className="drawer drawer-right" role="dialog" aria-label="Menu">
             <div className="drawer-head">
               <Flag />
               <button className="drawer-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">
