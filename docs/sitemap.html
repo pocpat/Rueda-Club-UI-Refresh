@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rueda Club — Site Map & Navigation Map</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #F4F6F8; color: #14202E; margin: 0; padding: 32px 20px 60px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; color: #0C1F3C; margin: 0 0 4px; }
+  h2 { font-size: 1.1rem; color: #0C1F3C; margin: 36px 0 12px; border-bottom: 2px solid #2E5FA3; padding-bottom: 6px; }
+  p.lead { color: #52606D; margin: 0 0 8px; font-size: 0.95rem; }
+  .card { background: #FFFFFF; border: 1px solid rgba(13,27,42,.1); border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(13,27,42,.06); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { text-align: left; background: #0C1F3C; color: #fff; padding: 9px 12px; }
+  td { padding: 8px 12px; border-bottom: 1px solid rgba(13,27,42,.08); }
+  tr:nth-child(even) td { background: #FAFBFC; }
+  .taps { font-weight: 800; color: #D90429; }
+  code { background: #E8EDF3; padding: 2px 7px; border-radius: 6px; font-size: 0.82rem; }
+  .foot { margin-top: 26px; color: #7B8794; font-size: 0.8rem; }
+  .mermaid { display: flex; justify-content: center; }
+  .mermaid svg { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Rueda Club — Site Map &amp; Navigation Map</h1>
+  <p class="lead">One-hand mobile UX reference: every screen, every path, and how many taps each core task costs.</p>
+
+  <h2>Screens &amp; paths</h2>
+  <div class="card">
+<pre class="mermaid">
+flowchart TD
+    classDef page fill:#F4F6F8,stroke:#2E5FA3,stroke-width:2px,color:#0D1B2A
+    classDef chrome fill:#0C1F3C,stroke:#0C1F3C,color:#FFFFFF
+    classDef key fill:#FFFFFF,stroke:#D90429,stroke-width:3px,color:#0D1B2A
+
+    NAV["NAVBAR — logo → Home · hamburger → Menu · day/night"]:::chrome
+    TABS["FOOTER TABS — Home · Classes · Playlist · Community · Favorites<br/>(always visible, thumb zone)"]:::chrome
+
+    subgraph CORE["Core flow — 1–3 taps, one thumb"]
+      HOME["HOME<br/>4 tiles · Quick Actions"]:::page
+      SEARCH["SEARCH<br/>find by name + level filters"]:::page
+      LEVELS["LEVELS<br/>all levels + counters"]:::page
+      CLASS["CLASS PAGE<br/>Rueda / Son / Documentary / Musicality"]:::page
+      DETAIL["LESSON<br/>video · chapters · description · ♥"]:::key
+    end
+
+    subgraph MORE["Other destinations"]
+      PLAYLIST["PLAYLIST<br/>songs — coming soon"]:::page
+      COMMUNITY["COMMUNITY<br/>venue + Google Maps"]:::page
+      FAVS["FAVORITES<br/>hearted lessons (on device)"]:::page
+      DRAWER["MENU DRAWER<br/>all tabs + styles"]:::page
+    end
+
+    NAV -->|"logo"| HOME
+    NAV -->|"hamburger"| DRAWER
+    TABS -->|"Home"| HOME
+    TABS -->|"Classes"| SEARCH
+    TABS -->|"Playlist"| PLAYLIST
+    TABS -->|"Community"| COMMUNITY
+    TABS -->|"Favorites"| FAVS
+
+    HOME -->|"tile VIEW / Find class"| DETAIL
+    HOME -->|"tile OPEN"| CLASS
+    HOME -->|"Search circle"| SEARCH
+    HOME -->|"Level circle"| LEVELS
+    HOME -->|"Play music"| PLAYLIST
+
+    SEARCH -->|"tap result / run"| DETAIL
+    SEARCH -->|"style card OPEN"| CLASS
+    LEVELS -->|"lesson card"| DETAIL
+    CLASS -->|"lesson card"| DETAIL
+    FAVS -->|"lesson card"| DETAIL
+
+    DRAWER -->|"tab / style"| CLASS
+    DETAIL -->|"Back — returns to origin"| CLASS
+</pre>
+  </div>
+
+  <h2>Core tasks — tap cost from Home</h2>
+  <div class="card">
+    <table>
+      <tr><th>Task</th><th>Path</th><th>Taps</th></tr>
+      <tr><td>Watch today's lesson</td><td>Home → tile VIEW</td><td class="taps">1</td></tr>
+      <tr><td>Open a style's classes</td><td>Home → style tile OPEN</td><td class="taps">1</td></tr>
+      <tr><td>Open a level's lessons</td><td>Home → Level → pick level</td><td class="taps">2</td></tr>
+      <tr><td>Find a move by name</td><td>Home → Search → type → tap result</td><td class="taps">3</td></tr>
+      <tr><td>Random Foundations tutorial</td><td>Home → Find class</td><td class="taps">1</td></tr>
+      <tr><td>Favorite a lesson</td><td>Lesson → ♥</td><td class="taps">1</td></tr>
+      <tr><td>See only my favorites</td><td>Footer → Favorites</td><td class="taps">1</td></tr>
+      <tr><td>Venue directions</td><td>Footer → Community → Maps</td><td class="taps">2</td></tr>
+    </table>
+  </div>
+
+  <h2>Keyboard &amp; accessibility map</h2>
+  <div class="card">
+    <table>
+      <tr><th>Where</th><th>Key</th><th>Action</th></tr>
+      <tr><td>Search field</td><td><code>Enter</code></td><td>run search — opens best match</td></tr>
+      <tr><td>Search results</td><td><code>↓ / ↑</code></td><td>move through results</td></tr>
+      <tr><td>Search results</td><td><code>Enter</code></td><td>open highlighted result</td></tr>
+      <tr><td>Search / drawer</td><td><code>Escape</code></td><td>close results / drawer</td></tr>
+      <tr><td>Every screen</td><td><code>Tab</code></td><td>all controls reachable in DOM order</td></tr>
+      <tr><td>Mobile keyboard</td><td>auto</td><td>results dropdown flips above input — never hidden under keyboard</td></tr>
+    </table>
+    <p class="lead" style="margin-top:12px">Search input is 16px — iOS Safari does not zoom on focus. All tap targets ≥ 44px.</p>
+  </div>
+
+  <h2>Routes (shareable URLs)</h2>
+  <div class="card">
+    <table>
+      <tr><th>Screen</th><th>URL</th></tr>
+      <tr><td>Home</td><td><code>/?tab=home</code> (default <code>/</code>)</td></tr>
+      <tr><td>Search</td><td><code>/?tab=classes</code></td></tr>
+      <tr><td>Levels</td><td><code>/?tab=levels</code></td></tr>
+      <tr><td>Class page</td><td><code>/?style=style-rueda-de-casino</code> (also son-cubano, documentary, musicality)</td></tr>
+      <tr><td>Lesson</td><td><code>/?move=&lt;moveId&gt;&amp;style=&lt;styleId&gt;</code></td></tr>
+      <tr><td>Playlist</td><td><code>/?tab=playlist</code></td></tr>
+      <tr><td>Community</td><td><code>/?tab=community</code></td></tr>
+      <tr><td>Favorites</td><td><code>/?tab=favorites</code></td></tr>
+    </table>
+  </div>
+
+  <p class="foot">Generated from the current code — re-verified after each UI change. Available as spreadsheet or automated report on request.</p>
+</div>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose', flowchart: { curve: 'step', nodeSpacing: 40, rankSpacing: 55, htmlLabels: true } });
+</script>
+</body>
+</html>
